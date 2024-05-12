@@ -198,7 +198,6 @@ function choose_capture_tool(){
 
 # function capture wifi packets with airodump-ng
 function capture_wifi_packets_with_airodump_ng(){
-        # /usr/share/fwifi/aircrack-ng/./airodump-ng "${interface}"
         read -p "[wush-ng] Enter the BSSID you want to attack: " target_bssid
         if [[ ! -z "${target_bssid}" ]]; then
                 if [[ "${target_bssid}" == "back" ]]; then
@@ -244,7 +243,6 @@ function capture_wifi_packets_with_airodump_ng(){
 
 # function to capture wifi packets with airbase-ng
 function capture_wifi_packets_with_airbase_ng(){
-        # /usr/share/fwifi/aircrack-ng/./airodump-ng "${interface}"
         read -p "[wush-ng] Enter the BSSID you want to attack: " target_bssid
         if [[ ! -z "${target_bssid}" ]]; then
                 if [[ "${target_bssid}" == "back" ]]; then
@@ -491,8 +489,8 @@ function crack_wifi_key_with_cowpatty(){
 # function to crack wifi key with john the ripper
 function crack_wifi_key_with_john(){
     	/usr/share/wush-ng/aircrack-ng/./aircrack-ng -J "${file_handshake}" "${file_handshake}"
-    	/usr/share/wush-ng/john/run/./hccap2john "${file_handshake}.hccap" > "${file_handshake}.fwifi"
-    	hash_file="${file_handshake}.fwifi"
+    	/usr/share/wush-ng/john/run/./hccap2john "${file_handshake}.hccap" > "${file_handshake}.wush"
+    	hash_file="${file_handshake}.wush"
     	/usr/share/wush-ng/john/run/./john --format="wpapsk" --wordlist="${file_wordlist}" "${hash_file}"
     	/usr/share/wush-ng/john/run/./john --show "${hash_file}"
     	echo ""
