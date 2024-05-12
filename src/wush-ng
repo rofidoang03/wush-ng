@@ -10,48 +10,51 @@ function check_root(){
 	fi
 }
 
-# function to choose the interface to be used.
-#!/bin/bash
+usage(){
+    echo "Usage: $0 -i <interface>"
+    echo "Options:"
+    echo "  -i, --interface <interface>   Specify the interface to use for the attack"
+    exit 1
+}
 
+choose_interface(){
+    interface=""
+    while [[ "$#" -gt 0 ]]; do
+        case "$1" in
+            -i|--interface)
+                if [[ -n "$2" ]]; then
+                    interface="$2"
+                    shift
+                else
+                    echo "Error: Interface name not specified after -i or --interface."
+                    usage
+                fi
+                ;;
+            *)
+                echo "Error: Unrecognized option '$1'."
+                usage
+                ;;
+        esac
+        shift
+    done
 
-function choose_interface() {
-        local interface_name=""
-        while [[ "$#" -gt 0 ]]; do
-                case "$1" in
-                    -i|--interface)
-                        if [[ -n "$2" ]]; then
-                            interface_name="$2"
-                            shift
-                        else
-                            echo "Error: Interface name not specified after -i or --interface."
-                            exit 1
-                        fi
-                        ;;
-                    *)
-                        echo "Error: Unrecognized option '$1'."
-                        exit 1
-                        ;;
-                esac
-                shift
-            done
-
-    if [[ -z "${interface_name}" ]]; then
+    if [[ -z "$interface" ]]; then
         echo "Error: Interface not specified. Use -i or --interface to specify the interface."
-        exit 1
+        usage
     fi
 
-    local available_interfaces=($(iw dev | awk '/Interface/{print $2}'))
-    local interface_found=false
+    available_interfaces=($(iw dev | awk '/Interface/{print $2}'))
+    interface_found=false
 
     for intf in "${available_interfaces[@]}"; do
-        if [[ "${intf}" == "${interface_name}" ]]; then
+        if [[ "$intf" == "$interface" ]]; then
             interface_found=true
             break
         fi
     done
 
-    if [[ "${interface_found}" = false ]]; then
-        echo "Error: Interface '${interface_name}' not found."
+    if [[ "$interface_found" = false ]]; then
+        echo "Error: Interface '$interface' not found."
         exit 1
     fi
 }
