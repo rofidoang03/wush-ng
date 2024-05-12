@@ -15,7 +15,7 @@ function check_root(){
 
 
 function choose_interface() {
-        interface_name=""
+        local interface_name=""
         while [[ "$#" -gt 0 ]]; do
                 case "$1" in
                     -i|--interface)
@@ -40,8 +40,8 @@ function choose_interface() {
         exit 1
     fi
 
-    available_interfaces=($(iw dev | awk '/Interface/{print $2}'))
-    interface_found=false
+    local available_interfaces=($(iw dev | awk '/Interface/{print $2}'))
+    local interface_found=false
 
     for intf in "${available_interfaces[@]}"; do
         if [[ "${intf}" == "${interface_name}" ]]; then
