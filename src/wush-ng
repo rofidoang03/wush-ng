@@ -10,30 +10,39 @@ function check_root(){
 	fi
 }
 
-# function to choose the interface to be used.
-function choose_interface(){
-        clear
-        echo ""
-	echo "Available interfaces:"
-	echo ""
-    	available_interfaces=($(iw dev | awk '/Interface/{print $2}'))
-    	for ((c=0; c<"${#available_interfaces[@]}"; c++)); do
-    		echo "[${c}] ${available_interfaces[$c]}"
-   	done
-    	echo ""
+function choose_interface() {
+    clear  
+    echo ""
+    echo "Available interfaces:"
+    echo ""
+    available_interfaces=()
+    while IFS= read -r line; do
+        if [[ $line =~ ^Interface\ ([^ ]+) ]]; then
+            available_interfaces+=("${BASH_REMATCH[1]}")
+        fi
+    done < <(iw dev | awk '/Interface/{print $2}')
 
-    	valid_interface=false
-    	while [[ "$valid_interface" = false ]]; do
-    		read -p "Please select the interface you want to use for the attack: " si
+    # Display available interfaces
+    for ((c=0; c<"${#available_interfaces[@]}"; c++)); do
+        echo "[$c] ${available_interfaces[$c]}"
+    done
+    echo ""
 
-        	if [[ "$si" -ge 0 ]] && [[ "$si" -lt "${#available_interfaces[@]}" ]]; then
-        		interface="${available_interfaces[$si]}"
-            		valid_interface=true
-         	else
-         		echo "Error: Interface not found. Please choose again."
-         	fi
-	done
-}          
+    # Prompt user to select an interface
+    valid_interface=false
+    while [[ "$valid_interface" = false ]]; do
+        read -p "Please select the interface you want to use for the attack: " si
+
+        # Validate input
+        if [[ "$si" =~ ^[0-9]+$ ]] && [[ "$si" -ge 0 ]] && [[ "$si" -lt "${#available_interfaces[@]}" ]]; then
+            interface="${available_interfaces[$si]}"
+            valid_interface=true
+        else
+            echo "Error: Invalid selection. Please choose a valid interface number."
+        fi
+    done
+}
+
 
 function show_banner(){
         waktu=$(date +"%Y-%m-%d %H:%M:%S")
