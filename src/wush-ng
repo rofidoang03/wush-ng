@@ -537,14 +537,14 @@ function crack_wps_pin(){
         fi
 }
 
-# function to exit fwifi
+# function to exit wush-ng 
 function exit_wush(){
 	echo "Exiting..."
 	sleep 3
 	exit 0
 }
 
-# fwifi function
+# wush-ng function
 function wush(){
 	check_root
 	choose_interface
@@ -552,7 +552,7 @@ function wush(){
 	main
 }
 
-fwifi
+wush-ng
 
 # Jangan disalah gunakan program ini oke...
 # ^_^
