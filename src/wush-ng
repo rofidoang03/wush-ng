@@ -547,7 +547,7 @@ function exit_wush(){
 # wush-ng function
 function wush(){
 	check_root
-	choose_interface "$@"
+	choose_interface
 	show_banner
 	main
 }
