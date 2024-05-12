@@ -21,7 +21,7 @@ choose_interface(){
     interface=""
     while [[ "$#" -gt 0 ]]; do
         case "$1" in
-            -i|--interface)
+            -i | --interface)
                 if [[ -n "$2" ]]; then
                     interface="$2"
                     shift
