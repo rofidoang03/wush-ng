@@ -1,5 +1,5 @@
 #!/bin/bash
-# script untuk menginstal fwifi
+# script untuk menginstal wush-ng 
 # dibuat oleh rofidoang03
 
 function root_check(){
