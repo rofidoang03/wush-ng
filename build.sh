@@ -1,34 +1,34 @@
 #!/bin/bash
-# script untuk menginstal wush-ng 
-# dibuat oleh rofidoang03
+# Script untuk menginstal wush-ng
+# Dibuat oleh rofidoang03
 
 function root_check(){
     if [ "$EUID" -ne 0 ]; then
-        echo "Error: This script must be run as root."
+        echo "Error: Script ini harus dijalankan sebagai root."
         exit 1
     fi
 }
 
 function check_internet_connection(){
     if ! ping -c 1 google.com &> /dev/null; then
-        echo "Error: No internet connection. Please connect to the internet to install FWIFI."
+        echo "Error: Tidak ada koneksi internet. Harap hubungkan ke internet untuk menginstal FWIFI."
         exit 1
     fi
 }
 
 function install_dependencies(){
-    update=(
+    updates=(
     "update"
     "upgrade"
     "full-upgrade"
     )
 
-    for u in "${update[@]}"; do
-        apt-get "${u}" -y
+    for u in "${updates[@]}"; do
+        apt-get "$u" -y
     done
     
-    dep=(
-    "build-essential" # aircrack-ng 
+    deps=(
+    "build-essential" # aircrack-ng
     "autoconf"
     "automake"
     "libtool"
@@ -52,7 +52,7 @@ function install_dependencies(){
     "iw"
     "usbutils"
     "expect"
-    "cmame" # john
+    "john" # cmame
     "libicu-dev"
     "bison"
     "flex"
@@ -60,12 +60,12 @@ function install_dependencies(){
     "yasm"
     "libbz2-dev"
     "cowpatty" # cowpatty
-    "pixiewps" # reaver 
+    "pixiewps" # reaver
     "git"
     )
 
-    for d in "${depedency[@]}"; do
-        apt-get install "${d}" -y
+    for d in "${deps[@]}"; do
+        apt-get install "$d" -y
     done
 }
     
@@ -100,7 +100,7 @@ function install_john(){
 }
 
 function install_reaver(){
-    https://github.com/t6x/reaver-wps-fork-t6x
+    git clone https://github.com/t6x/reaver-wps-fork-t6x
     cd reaver-wps-fork-t6x/src
     ./configure
     make
@@ -115,7 +115,7 @@ function set_execute_permission(){
 }
 
 function install(){
-    read -p "Do you want to install wush-ng [Y/n]: " ask
+    read -p "Apakah Anda ingin menginstal wush-ng [Y/n]: " ask
     if [[ "${ask}" == "y" || "${ask}" == "Y" ]]; then
         install_dependencies
         download_wordlists
@@ -124,10 +124,10 @@ function install(){
         install_reaver
         set_execute_permission
     elif [[ "${ask}" == "n" || "${ask}" == "N" ]]; then
-        echo "Installation cancelled."
+        echo "Pemasangan dibatalkan."
         exit 0
     else
-        echo "Error: Invalid choice. Please choose again."
+        echo "Error: Pilihan tidak valid. Harap pilih lagi."
         install
     fi
 }
