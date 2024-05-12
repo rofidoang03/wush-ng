@@ -6,7 +6,7 @@ wush-ng</h1>
 
 <p align="center"> <a href="home">Tentang</a> | <a href="https://github.com/rofidoang03/fwifi/blob/main/instal%20fwifi.txt">Instalasi</a> | <a href="">Demonstrasi</a></p>
 
-<img src="https://github.com/rofidoang03/wush-ng/blob/main/images/Screenshot_2024-05-02_20_21_41.png" />
+<img src="https://github.com/rofidoang03/wush-ng/blob/main/screenshot/Screenshot_2024-05-02_20_21_41%20(1).png" />
 
 <p><code>wush-ng</code> Adalah sebuah perangkat lunak audit keamanan WiFi yang dapat menangkap lalu lintas WiFi di sekitar, menemukan klien yang terhubung ke Access Point, melakukan serangan deautentikasi, menangkap handshake, dan membobol kata sandi dari Access Point.</p>
 
