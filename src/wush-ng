@@ -19,12 +19,15 @@ usage(){
 
 choose_interface(){
     interface=""
+
+    # Loop melalui semua argument yang diberikan
     while [[ "$#" -gt 0 ]]; do
         case "$1" in
             -i | --interface)
-                if [[ -n "$2" ]]; then
+                # Memeriksa apakah nilai interface sesudah opsi -i atau --interface
+                if [[ -n "$2" && ! "$2" == -* ]]; then
                     interface="$2"
-                    shift
+                    shift  # Geser indeks argumen ke depan karena sudah memproses nilai interface
                 else
                     echo "Error: Interface name not specified after -i or --interface."
                     usage
@@ -35,17 +38,20 @@ choose_interface(){
                 usage
                 ;;
         esac
-        shift
+        shift  # Geser indeks argumen ke depan untuk memproses argumen selanjutnya
     done
 
+    # Memeriksa apakah interface sudah ditentukan
     if [[ -z "$interface" ]]; then
         echo "Error: Interface not specified. Use -i or --interface to specify the interface."
         usage
     fi
 
+    # Mendapatkan daftar interface yang tersedia menggunakan iw dev
     available_interfaces=($(iw dev | awk '/Interface/{print $2}'))
     interface_found=false
 
+    # Memeriksa apakah interface yang diminta ada di daftar interface yang tersedia
     for intf in "${available_interfaces[@]}"; do
         if [[ "$intf" == "$interface" ]]; then
             interface_found=true
@@ -53,6 +59,7 @@ choose_interface(){
         fi
     done
 
+    # Jika interface yang diminta tidak ditemukan
     if [[ "$interface_found" = false ]]; then
         echo "Error: Interface '$interface' not found."
         exit 1
