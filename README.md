@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://github.com/rofidoang03/fwifi/blob/main/images/20240511_232154.png" width="100px" height="100px"/><br>
+  <img src="https://github.com/rofidoang03/wush-ng/blob/main/icon/20240511_232154.png" width="100px" height="100px"/><br>
 wush-ng</h1>
 
 <p align="center">Perangkat lunak audit keamanan WiFi</p>
