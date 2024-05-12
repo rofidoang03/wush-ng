@@ -118,7 +118,7 @@ function main(){
     	esac    
 }
 
-# function to update the FWIFI tool.
+# function to update the wush-ng tool.
 function update(){
 	apt-get update
 	apt-get upgrade
@@ -160,7 +160,7 @@ function banner_capture_wifi_packets(){
         clear 
         echo ""
         echo "[ ${waktu} ]"
-        echo "                             FWIFI"
+        echo "                            wush-ng"
         echo ""
         echo "**********  Select a Tool to Capture Wi-Fi Packets  ***********" # +1 #
         echo "==============================================================="
@@ -348,7 +348,7 @@ function banner_menu_choose_a_wordlist_file(){
                 clear
                 echo ""
                 echo "[ ${waktu} ]"
-                echo "                             FWIFI"
+                echo "                            wush-ng"
                 echo ""
                 echo "*********  Select a Wordlist File to Crack Wi-Fi Key  *********"
                 echo "==============================================================="      
@@ -422,7 +422,7 @@ function banner_choose_wifi_key_cracking_tool(){
                 clear
                 echo ""
                 echo "[ ${waktu} ]"
-                echo "                             FWIFI"
+                echo "                            wush-ng"
                 echo ""
                 echo "*************  Select a tool to crack Wi-Fi Key.  *************"
                 echo "==============================================================="
