@@ -324,7 +324,10 @@ function check_for_valid_4_way_frames(){
 function handshake_file(){
 	read -p "[wush-ng] Enter the handshake file name: " file_handshake
         if [[ ! -z "${file_handshake}" ]]; then
-	        if [[ -f "${file_handshake}" ]]; then
+                if [[ "${file_handshake}" == "back" ]]; then
+                        show_banner
+                        main
+	        elif [[ -f "${file_handshake}" ]]; then
         	        # Check if the specified file is not a .cap file
           	        if [[ ! "${file_handshake}" =~ \.cap$ ]]; then
               		        echo "Error: Invalid file format. Please provide a valid .cap file."
