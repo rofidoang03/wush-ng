@@ -97,7 +97,7 @@ function main(){
                         show_banner
 			main
             		;;
-        	6)
+        	7)
             		check_for_valid_4_way_frames
                         show_banner
             		main
