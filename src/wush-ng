@@ -38,6 +38,7 @@ function choose_interface(){
 function show_banner(){
         waktu=$(date +"%Y-%m-%d %H:%M:%S")
         clear
+        echo ""
         echo "[ ${waktu} ]"
         echo ""
         echo "                            wush-ng"
@@ -65,9 +66,6 @@ function show_banner(){
 function main(){
 	read -p "[wush-ng] " choice
 	case "${choice}" in
-                "back")
-                        choose_interface
-                        ;;
         	1)
             		enable_monitor_mode
                         show_banner
