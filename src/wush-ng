@@ -128,28 +128,28 @@ function update(){
 
 # function to enable monitor mode.
 function enable_monitor_mode(){
-	/usr/share/fwifi/aircrack-ng/scripts/.airmon-ng check kill
-	/usr/share/fwifi/aircrack-ng/scripts/.airmon-ng start "${interface}"
+	/usr/share/wush-ng/aircrack-ng/scripts/.airmon-ng check kill
+	/usr/share/wush-ng/aircrack-ng/scripts/.airmon-ng start "${interface}"
 	echo ""
 	read -p "Press [Enter] to continue..."
 }
 
 # function to disable monitor mode.
 function disable_monitor_mode(){
-	/usr/share/fwifi/aircrack-ng/scripts/.airmon-ng stop "${interface}"
+	/usr/share/wush-ng/aircrack-ng/scripts/.airmon-ng stop "${interface}"
 	echo ""
 	read -p "Press [Enter] to continue..."
 }
 
 function scan_networks(){
-        /usr/share/fwifi/aircrack-ng/./airodump-ng "${interface}"
+        /usr/share/wush-ng/aircrack-ng/./airodump-ng "${interface}"
         echo ""
 	read -p "Press [Enter] to continue..."
 }
 
 function scan_wps_networks(){
         echo ""
-        /usr/share/fwifi/reaver-wps-fork-t6x/src/./wash -i "${interface}"
+        /usr/share/wush-ng/reaver-wps-fork-t6x/src/./wash -i "${interface}"
         echo ""
         read -p "Press [Enter] to continue..."
 }
@@ -224,7 +224,7 @@ function capture_wifi_packets_with_airodump_ng(){
                                                         if [[ "${output_file}" == "back" ]]; then
                                                                 channel_airodump
                                                         else
-                                                                /usr/share/fwifi/aircrack-ng/./airodump-ng --bssid "${target_bssid}" --channel "${channel}" -w "${output_file}" "${interface}"
+                                                                /usr/share/wush-ng/aircrack-ng/./airodump-ng --bssid "${target_bssid}" --channel "${channel}" -w "${output_file}" "${interface}"
                                                                 echo ""
                                                                 read -p "Press [Enter] to continue..."
                                                         fi
@@ -264,7 +264,7 @@ function capture_wifi_packets_with_airbase_ng(){
                                         echo "Error: Invalid channel. Please enter a valid numeric channel."
                                         channel_besside
                                 else
-                                        /usr/share/fwifi/aircrack-ng/besside-ng -b "${target_bssid}" -W -c "${channel}" -v "${interface}"
+                                        /usr/share/wush-ng/aircrack-ng/besside-ng -b "${target_bssid}" -W -c "${channel}" -v "${interface}"
                                         echo ""
                                         read -p "Press [Enter] to continue..."
                                 fi
@@ -285,7 +285,7 @@ function inject_wifi_packets(){
                         show_banner
                 	main
                 else
-                        usr/share/fwifi/aircrack-ng/./aireplay-ng -0 0 -a "${target_bssid}" "${interface}"
+                        usr/share/wush-ng/aircrack-ng/./aireplay-ng -0 0 -a "${target_bssid}" "${interface}"
                         echo ""
                         read -p "Press [Enter] to continue..."
                 fi
@@ -374,19 +374,19 @@ function choose_wordlist(){
                         handshake_file
                         ;;
        		1)
-                	file_wordlist="/usr/share/fwifi/wordlists/rockyou.txt"
+                	file_wordlist="/usr/share/wush-ng/wordlists/rockyou.txt"
                 	;;
             	2)
-                	file_wordlist="/usr/share/fwifi/wordlists/wordlist-top4800-probable.txt"
+                	file_wordlist="/usr/share/wush-ng/wordlists/wordlist-top4800-probable.txt"
                 	;;
             	3)
-                	file_wordlist="/usr/share/fwifi/wordlists/wotabuhun.txt"
+                	file_wordlist="/usr/share/wush-ng/wordlists/wotabuhun.txt"
                 	;;
             	4)
-                	file_wordlist="/usr/share/fwifi/wordlists/indonesian-wordlist.lst"
+                	file_wordlist="/usr/share/wush-ng/wordlists/indonesian-wordlist.lst"
                 	;;
             	5)
-                	file_wordlist="/usr/share/fwifi/wordlists/wpa-over200k.txt"
+                	file_wordlist="/usr/share/wush-ng/wordlists/wpa-over200k.txt"
                 	;;
             	6)
                 	custom_wordlist
@@ -473,7 +473,7 @@ function crack_wifi_key(){
 
 # function to crack wifi key with aircrack-ng
 function crack_wifi_key_with_aircrack(){
-    	/usr/share/fwifi/aircrack-ng/./aircrack-ng -a2 -w "${file_wordlist}" "${file_handshake}"
+    	/usr/share/wush-ng/aircrack-ng/./aircrack-ng -a2 -w "${file_wordlist}" "${file_handshake}"
     	echo ""
     	read -p "Press [Enter] to continue..."
 	show_banner
@@ -499,11 +499,11 @@ function crack_wifi_key_with_cowpatty(){
 
 # function to crack wifi key with john the ripper
 function crack_wifi_key_with_john(){
-    	/usr/share/fwifi/aircrack-ng/./aircrack-ng -J "${file_handshake}" "${file_handshake}"
-    	/usr/share/fwifi/john/run/./hccap2john "${file_handshake}.hccap" > "${file_handshake}.fwifi"
+    	/usr/share/wush-ng/aircrack-ng/./aircrack-ng -J "${file_handshake}" "${file_handshake}"
+    	/usr/share/wush-ng/john/run/./hccap2john "${file_handshake}.hccap" > "${file_handshake}.fwifi"
     	hash_file="${file_handshake}.fwifi"
-    	/usr/share/fwifi/john/run/./john --format="wpapsk" --wordlist="${file_wordlist}" "${hash_file}"
-    	/usr/share/fwifi/john/run/./john --show "${hash_file}"
+    	/usr/share/wush-ng/john/run/./john --format="wpapsk" --wordlist="${file_wordlist}" "${hash_file}"
+    	/usr/share/wush-ng/john/run/./john --show "${hash_file}"
     	echo ""
     	read -p "Press [Enter] to continue..."
 	show_banner
@@ -525,7 +525,7 @@ function crack_wps_pin(){
                                         echo "Error: Invalid channel. Please enter a valid numeric channel."
                                         channel_reaver
                                 else
-                                        /usr/share/fwifi/reaver-wps-fork-t6x/src/./reaver -i "${interface}" -c "${channel}" -b "${target_bssid}" -T 30 -vv
+                                        /usr/share/wush-ng/reaver-wps-fork-t6x/src/./reaver -i "${interface}" -c "${channel}" -b "${target_bssid}" -T 30 -vv
                                         echo ""
                                         read -p "Press [Enter] to continue..."
                                 fi
