@@ -189,9 +189,6 @@ function choose_capture_tool(){
                 	capture_wifi_packets_with_airbase_ng
                 	break
                 	;;
-            	99)
-                	exit_fwifi
-                	;;
             	*)
                 	echo "Error: Invalid choice. Please choose again."
                 	choose_capture_tool
@@ -391,9 +388,6 @@ function choose_wordlist(){
             	6)
                 	custom_wordlist
                 	;;
-                99)
-                        exit_fwifi
-                        ;;
             	*)
                 	echo "Error: Invalid choice. Please choose again."  
                 	;;
@@ -452,9 +446,6 @@ function choose_cracking_tool(){
             	3)
                 	crack_wifi_key_with_john
                 	;;
-                99)     
-                        exit_fwifi
-                        ;;
             	*)
                 	echo "Error: Invalid choice. Please choose again."
 			choose_cracking_tool
