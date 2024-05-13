@@ -1,8 +1,11 @@
-#!/bin/bash
-# wush-ng
-# codec by rofidoang03
+#!/usr/bin/env bash
+# Program........: wush-ng
+# Deskripsi......: Perangkat lunak audit keamanan WiFi.
+# Pembuat........: Fixploit
+# Version........: 1.5
+# Penggunaan.....: bash wush-ng
 
-# function to check if the user is in root mode or not
+# Fungsi untuk memeriksa apakah pengguna berada dalam mode root atau tidak.
 function check_root(){
 	if [[ "$EUID" -ne 0 ]]; then
 		echo  "This script must be run as root."
@@ -10,7 +13,7 @@ function check_root(){
 	fi
 }
 
-# function to choose the interface to be used.
+# Fungsi untuk memilih interface yang akan digunakan.
 function choose_interface(){
         clear
         echo ""
@@ -35,6 +38,7 @@ function choose_interface(){
 	done
 }          
 
+# Fungsi untuk menampilkan banner 
 function show_banner(){
         waktu=$(date +"%Y-%m-%d %H:%M:%S")
         clear
@@ -62,7 +66,7 @@ function show_banner(){
         echo ""
 }
 
-# main function
+# Fungsi utama dari wush-ng
 function main(){
 	read -p "[wush-ng] " choice
 	case "${choice}" in
@@ -118,7 +122,7 @@ function main(){
     	esac    
 }
 
-# function to update the wush-ng tool.
+# Fungsi untuk memperbarui wush-ng.
 function update(){
 	apt-get update
 	apt-get upgrade
@@ -126,7 +130,7 @@ function update(){
 	read -p "Press [Enter] to continue..."
 }
 
-# function to enable monitor mode.
+# Fungsi untuk mengaktifkan mode monitor 
 function enable_monitor_mode(){
 	/usr/share/wush-ng/aircrack-ng/scripts/.airmon-ng check kill
 	/usr/share/wush-ng/aircrack-ng/scripts/.airmon-ng start "${interface}"
@@ -134,19 +138,21 @@ function enable_monitor_mode(){
 	read -p "Press [Enter] to continue..."
 }
 
-# function to disable monitor mode.
+# Fungsi untuk menonaktifkan mode monitor 
 function disable_monitor_mode(){
 	/usr/share/wush-ng/aircrack-ng/scripts/.airmon-ng stop "${interface}"
 	echo ""
 	read -p "Press [Enter] to continue..."
 }
 
+# Fungsi untuk memindai jangan 
 function scan_networks(){
         /usr/share/wush-ng/aircrack-ng/./airodump-ng "${interface}"
         echo ""
 	read -p "Press [Enter] to continue..."
 }
 
+# Fungsi untuk memindai jaringan yang menggunakan wps
 function scan_wps_networks(){
         echo ""
         /usr/share/wush-ng/reaver-wps-fork-t6x/src/./wash -i "${interface}"
@@ -154,7 +160,8 @@ function scan_wps_networks(){
         read -p "Press [Enter] to continue..."
 }
 
-# function to capture wifi packets			
+
+# Fungsi untuk menangkap paket Wi-Fi			
 function banner_capture_wifi_packets(){
 	waktu=$(date +"%Y-%m-%d %H:%M:%S")
         clear 
@@ -173,7 +180,8 @@ function banner_capture_wifi_packets(){
         echo "              [ ] Select Option or CTRL+C to Abord"
         echo ""
 }
-    
+
+# Fungsi untuk memilih alat untuk menangkap paket Wi-Fi
 function choose_capture_tool(){
 	read -p "[wush-ng] Enter your choice: " capture_tool
 	case "${capture_tool}" in
@@ -196,7 +204,7 @@ function choose_capture_tool(){
         esac
 }
 
-# function capture wifi packets with airodump-ng
+# Fungsi untuk menangkap paket Wi-Fi menggunakan airodump-ng
 function capture_wifi_packets_with_airodump_ng(){
         read -p "[wush-ng] Enter the BSSID you want to attack: " target_bssid
         if [[ ! -z "${target_bssid}" ]]; then
@@ -241,7 +249,7 @@ function capture_wifi_packets_with_airodump_ng(){
         fi
 }
 
-# function to capture wifi packets with airbase-ng
+# Fungsi untuk menangkap paket Wi-Fi menggunakan besside-ng
 function capture_wifi_packets_with_airbase_ng(){
         read -p "[wush-ng] Enter the BSSID you want to attack: " target_bssid
         if [[ ! -z "${target_bssid}" ]]; then
@@ -272,7 +280,7 @@ function capture_wifi_packets_with_airbase_ng(){
         fi
 }
 
-# function to inject wifi packets
+# Fungsi untuk menyuntikkan paket Wi-Fi
 function inject_wifi_packets(){
         read -p "[wush-ng] Enter the BSSID you want to attack: " target_bssid
         if [[ ! -z "${target_bssid}" ]]; then
@@ -290,7 +298,7 @@ function inject_wifi_packets(){
         fi
 }
 
-# function to check for valid 4 way frames
+# Fungsi untuk memeriksa keberadaan frame 4-way handshake yang valid.
 function check_for_valid_4_way_frames(){
         read -p "[wush-ng] Enter the handshake file name: " file_handshake
         if [[ ! -z "${file_handshake}" ]]; then
@@ -316,6 +324,7 @@ function check_for_valid_4_way_frames(){
         fi
 }
 
+# Fungsi untuk memilih file handshake yang akan di-crack
 function handshake_file(){
 	read -p "[wush-ng] Enter the handshake file name: " file_handshake
         if [[ ! -z "${file_handshake}" ]]; then
@@ -338,6 +347,7 @@ function handshake_file(){
 	fi
 }
 
+# Fungsi untuk menampilkan menu pilih file wordlist 
 function banner_menu_choose_a_wordlist_file(){
 		waktu=$(date +"%Y-%m-%d %H:%M:%S")
                 clear
@@ -361,6 +371,7 @@ function banner_menu_choose_a_wordlist_file(){
                 echo ""
 }
 
+# Fungsi untuk memilih file wordlist 
 function choose_wordlist(){
 	read -p "[wush-ng] Enter your choice: " choice
 
@@ -392,6 +403,7 @@ function choose_wordlist(){
 	esac
 }
 
+# fungsi untuk wordlist custom
 function custom_wordlist(){
 	read -p "[wush-ng] Enter the custom wordlist file name: " file_wordlist
         if [[ ! -z "${custom_wordlist}" ]]; then
@@ -409,6 +421,7 @@ function custom_wordlist(){
         
 }
 
+# Fungsi untuk menampilkan menu pilih alat untuk meng-crack file handshake 
 function banner_choose_wifi_key_cracking_tool(){
 		waktu=$(date +"%Y-%m-%d %H:%M:%S")
                 clear
@@ -429,6 +442,7 @@ function banner_choose_wifi_key_cracking_tool(){
                 echo ""
 }
 
+# Fungsi memilih alat untuk melakukan cracking 
 function choose_cracking_tool(){
 	read -p "[wush-ng] Enter your choice: " cracking_tool
     	case "${cracking_tool}" in
@@ -451,7 +465,7 @@ function choose_cracking_tool(){
           esac
 }
 
-# function to crack wifi key
+# Fungsi untuk melakukan cracking terhad kunci wi-fi 
 function crack_wifi_key(){
 	handshake_file
 	banner_menu_choose_a_wordlist_file
@@ -460,7 +474,7 @@ function crack_wifi_key(){
 	choose_cracking_tool
 }
 
-# function to crack wifi key with aircrack-ng
+# Fungsi untuk memecahkan kunci WiFi menggunakan aircrack-ng 
 function crack_wifi_key_with_aircrack(){
     	/usr/share/wush-ng/aircrack-ng/./aircrack-ng -a2 -w "${file_wordlist}" "${file_handshake}"
     	echo ""
@@ -469,7 +483,7 @@ function crack_wifi_key_with_aircrack(){
     	main
  }
 
-# function to crack wifi key with cowpatty
+# Fungsi untuk memecahkan kunci WiFi menggunakan cowpatty 
 function crack_wifi_key_with_cowpatty(){
 	read -p "[wush-ng] Enter the Network SSID: " ssid
 
@@ -486,7 +500,7 @@ function crack_wifi_key_with_cowpatty(){
 
 }
 
-# function to crack wifi key with john the ripper
+# Fungsi untuk memecahkan kunci WiFi menggunakan john the ripper 
 function crack_wifi_key_with_john(){
     	/usr/share/wush-ng/aircrack-ng/./aircrack-ng -J "${file_handshake}" "${file_handshake}"
     	/usr/share/wush-ng/john/run/./hccap2john "${file_handshake}.hccap" > "${file_handshake}.wush"
@@ -499,6 +513,7 @@ function crack_wifi_key_with_john(){
     	main
 }
 
+$ Fungsi untuk memecahkan pin wps
 function crack_wps_pin(){
         read -p "[wush-ng] Enter the BSSID you want to attack: " target_bssid
         if [[ ! -z "${target_bssid}" ]]; then
@@ -527,14 +542,14 @@ function crack_wps_pin(){
         fi
 }
 
-# function to exit wush-ng 
+# Fungsi untuk keluar dari program wush-ng
 function exit_wush(){
 	echo "Exiting..."
 	sleep 3
 	exit 0
 }
 
-# wush-ng function
+# Fungsi wush-ng
 function wush(){
 	check_root
 	choose_interface
