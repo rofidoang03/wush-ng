@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Program........: wush-ng
 # Deskripsi......: Perangkat lunak audit keamanan WiFi.
-# Pembuat........: Fixploit
+# Pembuat........: Rofi
 # Version........: 1.5
 # Penggunaan.....: bash wush-ng
 #
