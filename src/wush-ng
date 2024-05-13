@@ -504,9 +504,13 @@ function crack_wifi_key_with_cowpatty(){
 function crack_wifi_key_with_john(){
         # Menjalankan aircrack-ng dengan tujuan mengonversi file handshake Wi-Fi ke dalam format yang dapat dibaca oleh John the Ripper (format .hccap).
     	/usr/share/wush-ng/aircrack-ng/./aircrack-ng -J "${file_handshake}" "${file_handshake}"
+        # Menjalankan hccap2john yang akan mengonversi file .hccap (hasil dari aircrack-ng) ke format yang dapat dibaca oleh John the Ripper. Hasilnya akan disimpan dalam file dengan ekstensi .wush.
     	/usr/share/wush-ng/john/run/./hccap2john "${file_handshake}.hccap" > "${file_handshake}.wush"
+        # Variabel untuk nama file hash
     	hash_file="${file_handshake}.wush"
+        # Menjalankan John the Ripper untuk melakukan serangan kata sandi terhadap file hash yang disediakan.
     	/usr/share/wush-ng/john/run/./john --format="wpapsk" --wordlist="${file_wordlist}" "${hash_file}"
+        # Menampilkan kata sandi yang berhasil diretas oleh John the Ripper.
     	/usr/share/wush-ng/john/run/./john --show "${hash_file}"
     	echo ""
     	read -p "Press [Enter] to continue..."
