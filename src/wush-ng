@@ -38,7 +38,7 @@ function choose_interface(){
 	done
 }          
 
-# Fungsi untuk menampilkan banner 
+# Fungsi untuk menampilkan banner.
 function show_banner(){
         waktu=$(date +"%Y-%m-%d %H:%M:%S")
         clear
@@ -66,7 +66,7 @@ function show_banner(){
         echo ""
 }
 
-# Fungsi utama dari wush-ng
+# Fungsi utama dari wush-ng.
 function main(){
 	read -p "[wush-ng] " choice
 	case "${choice}" in
@@ -130,7 +130,7 @@ function update(){
 	read -p "Press [Enter] to continue..."
 }
 
-# Fungsi untuk mengaktifkan mode monitor 
+# Fungsi untuk mengaktifkan mode monitor.
 function enable_monitor_mode(){
 	/usr/share/wush-ng/aircrack-ng/scripts/.airmon-ng check kill
 	/usr/share/wush-ng/aircrack-ng/scripts/.airmon-ng start "${interface}"
@@ -138,21 +138,21 @@ function enable_monitor_mode(){
 	read -p "Press [Enter] to continue..."
 }
 
-# Fungsi untuk menonaktifkan mode monitor 
+# Fungsi untuk menonaktifkan mode monitor.
 function disable_monitor_mode(){
 	/usr/share/wush-ng/aircrack-ng/scripts/.airmon-ng stop "${interface}"
 	echo ""
 	read -p "Press [Enter] to continue..."
 }
 
-# Fungsi untuk memindai jangan 
+# Fungsi untuk memindai jangan.
 function scan_networks(){
         /usr/share/wush-ng/aircrack-ng/./airodump-ng "${interface}"
         echo ""
 	read -p "Press [Enter] to continue..."
 }
 
-# Fungsi untuk memindai jaringan yang menggunakan wps
+# Fungsi untuk memindai jaringan WPS.
 function scan_wps_networks(){
         echo ""
         /usr/share/wush-ng/reaver-wps-fork-t6x/src/./wash -i "${interface}"
@@ -161,7 +161,7 @@ function scan_wps_networks(){
 }
 
 
-# Fungsi untuk menangkap paket Wi-Fi			
+# Fungsi untuk menangkap paket Wi-Fi.			
 function banner_capture_wifi_packets(){
 	waktu=$(date +"%Y-%m-%d %H:%M:%S")
         clear 
@@ -181,7 +181,7 @@ function banner_capture_wifi_packets(){
         echo ""
 }
 
-# Fungsi untuk memilih alat untuk menangkap paket Wi-Fi
+# Fungsi untuk memilih alat yang ingin digunakan untuk menangkap paket Wi-Fi.
 function choose_capture_tool(){
 	read -p "[wush-ng] Enter your choice: " capture_tool
 	case "${capture_tool}" in
@@ -204,7 +204,7 @@ function choose_capture_tool(){
         esac
 }
 
-# Fungsi untuk menangkap paket Wi-Fi menggunakan airodump-ng
+# Fungsi untuk menangkap paket Wi-Fi menggunakan airodump-ng.
 function capture_wifi_packets_with_airodump_ng(){
         read -p "[wush-ng] Enter the BSSID you want to attack: " target_bssid
         if [[ ! -z "${target_bssid}" ]]; then
@@ -249,7 +249,7 @@ function capture_wifi_packets_with_airodump_ng(){
         fi
 }
 
-# Fungsi untuk menangkap paket Wi-Fi menggunakan besside-ng
+# Fungsi untuk menangkap paket Wi-Fi menggunakan besside-ng.
 function capture_wifi_packets_with_airbase_ng(){
         read -p "[wush-ng] Enter the BSSID you want to attack: " target_bssid
         if [[ ! -z "${target_bssid}" ]]; then
@@ -280,7 +280,7 @@ function capture_wifi_packets_with_airbase_ng(){
         fi
 }
 
-# Fungsi untuk menyuntikkan paket Wi-Fi
+# Fungsi untuk menyuntikkan paket Wi-Fi.
 function inject_wifi_packets(){
         read -p "[wush-ng] Enter the BSSID you want to attack: " target_bssid
         if [[ ! -z "${target_bssid}" ]]; then
@@ -324,7 +324,7 @@ function check_for_valid_4_way_frames(){
         fi
 }
 
-# Fungsi untuk memilih file handshake yang akan di-crack
+# Fungsi untuk memilih file handshake yang ingin di-crack.
 function handshake_file(){
 	read -p "[wush-ng] Enter the handshake file name: " file_handshake
         if [[ ! -z "${file_handshake}" ]]; then
@@ -347,7 +347,7 @@ function handshake_file(){
 	fi
 }
 
-# Fungsi untuk menampilkan menu pilih file wordlist 
+# Fungsi untuk menampilkan menu file wordlist 
 function banner_menu_choose_a_wordlist_file(){
 		waktu=$(date +"%Y-%m-%d %H:%M:%S")
                 clear
@@ -371,7 +371,7 @@ function banner_menu_choose_a_wordlist_file(){
                 echo ""
 }
 
-# Fungsi untuk memilih file wordlist 
+# Fungsi untuk memilih file wordlist yang ingin digunakan.
 function choose_wordlist(){
 	read -p "[wush-ng] Enter your choice: " choice
 
@@ -403,7 +403,7 @@ function choose_wordlist(){
 	esac
 }
 
-# fungsi untuk wordlist custom
+# fungsi untuk memilih wordlist custom.
 function custom_wordlist(){
 	read -p "[wush-ng] Enter the custom wordlist file name: " file_wordlist
         if [[ ! -z "${custom_wordlist}" ]]; then
@@ -421,7 +421,7 @@ function custom_wordlist(){
         
 }
 
-# Fungsi untuk menampilkan menu pilih alat untuk meng-crack file handshake 
+# Fungsi untuk menampilkan menu alat untuk meng-crack file handshake.
 function banner_choose_wifi_key_cracking_tool(){
 		waktu=$(date +"%Y-%m-%d %H:%M:%S")
                 clear
@@ -442,7 +442,7 @@ function banner_choose_wifi_key_cracking_tool(){
                 echo ""
 }
 
-# Fungsi memilih alat untuk melakukan cracking 
+# Fungsi untuk memilih alat untuk memecahkan kunci WiFi:
 function choose_cracking_tool(){
 	read -p "[wush-ng] Enter your choice: " cracking_tool
     	case "${cracking_tool}" in
@@ -465,7 +465,7 @@ function choose_cracking_tool(){
           esac
 }
 
-# Fungsi untuk melakukan cracking terhad kunci wi-fi 
+# Fungsi untuk memecahkan kunci Wi-Fi
 function crack_wifi_key(){
 	handshake_file
 	banner_menu_choose_a_wordlist_file
@@ -513,7 +513,7 @@ function crack_wifi_key_with_john(){
     	main
 }
 
-$ Fungsi untuk memecahkan pin wps
+# Fungsi untuk menjalankan serangan PIN WPS
 function crack_wps_pin(){
         read -p "[wush-ng] Enter the BSSID you want to attack: " target_bssid
         if [[ ! -z "${target_bssid}" ]]; then
