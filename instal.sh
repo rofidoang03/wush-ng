@@ -24,7 +24,6 @@ function download_rockyou(){
         link="https://github.com/praetorian-inc/Hob0Rules/raw/master/wordlists/rockyou.txt.gz"
         path="/usr/share/wush-ng/wordlists/"
         file="rockyou.txt.gz"
-        mkdir -p "${path}"
         cd "${path}"
         echo "[*] Mendownload wordlist ${file} ..."
         sleep 3
@@ -46,7 +45,6 @@ read -p "Apakah Anda ingin menginstal wish (Y/n): " n
 if [[ "${n}" == "y" ]] || [[ "${n}" == "Y" ]]; then
         echo "[*] Menginstal wush-ng..."
         cd /usr/share
-        mkdir -p wordlists
         echo "[*] Memperbarui daftar paket dari repositori..."
         sleep 3
         apt-get update -y
@@ -57,6 +55,7 @@ if [[ "${n}" == "y" ]] || [[ "${n}" == "Y" ]]; then
         git clone https://github.com/rofidoang03/wush-ng.git
         echo "[+] Repositori wush-ng berhasil dikloning dari Github."
         cd wush-ng
+        mkdir -p wordlists
         instal_depedensi
         download_rockyou
         echo "[+] wush-ng berhasil diinstal."
