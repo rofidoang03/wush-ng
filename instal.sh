@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# script untuk menginstal wush-ng
 
 read -p "Apakah Anda ingin menginstal wish (Y/n): " n
 if [[ "${n}" == "y" ]] || [[ "${n}" == "Y" ]]; then
