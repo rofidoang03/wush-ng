@@ -7,7 +7,7 @@ if [[ "${n}" == "y" ]] || [[ "${n}" == "Y" ]]; then
         sleep 3
         echo "[*] Memperbarui daftar paket dari repositori..."
         sleep 3
-        depedensi(
+        depedensi=(
         "aircrack-ng"
         "xterm"
         )
