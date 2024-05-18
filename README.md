@@ -2,7 +2,7 @@
   <img src="https://github.com/rofidoang03/wush-ng/blob/main/icon/20240511_232154.png" width="100px" height="100px"/><br>
 wush-ng</h1>
 
-<p align="center">Perangkat lunak audit keamanan WiFi</p>
+<p align="center">Perangkat Lunak Audit Keamanan Wi-Fi</p>
 
 <p align="center"> <a href="home">Tentang</a> | <a href="https://github.com/rofidoang03/fwifi/blob/main/instal%20fwifi.txt">Instalasi</a> | <a href="">Demonstrasi</a></p>
 
