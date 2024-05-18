@@ -5,7 +5,6 @@ function instal_depedensi(){
         depedensi=(
                 "aircrack-ng"
                 "xterm"
-                "git"
                 "wget"
                 )
         echo "[*] Menginstal semua depedensi yang diperlukan..."
@@ -25,6 +24,7 @@ function download_rockyou(){
         path="/usr/share/wush-ng/wordlists/"
         file="rockyou.txt.gz"
         cd "${path}"
+        mkdir wordlists
         echo "[*] Mendownload wordlist ${file} ..."
         sleep 3
         wget "${link}"
@@ -44,20 +44,10 @@ function berikan_izin_eksekusi(){
 read -p "Apakah Anda ingin menginstal wish (Y/n): " n
 if [[ "${n}" == "y" ]] || [[ "${n}" == "Y" ]]; then
         echo "[*] Menginstal wush-ng..."
-        cd /usr/share
-        echo "[*] Memperbarui daftar paket dari repositori..."
         sleep 3
-        apt-get update -y
-        echo "[+] Daftar paket dari repositori berhasil diperbarui."
-        echo "[*] Kloning repositori wush-ng dari Github..."
-        sleep 3
-        apt-get install git -y
-        git clone https://github.com/rofidoang03/wush-ng.git
-        echo "[+] Repositori wush-ng berhasil dikloning dari Github."
-        cd wush-ng
-        mkdir -p wordlists
         instal_depedensi
         download_rockyou
+        berikan_izin_eksekusi
         echo "[+] wush-ng berhasil diinstal."
         sleep 3
         echo "[+] Ketikkan perintah wush-ng untuk menjalankannya."
