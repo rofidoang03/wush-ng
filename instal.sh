@@ -24,7 +24,7 @@ function download_rockyou(){
         path="/usr/share/wush-ng/wordlists/"
         file="rockyou.txt.gz"
         cd "${path}"
-        mkdir wordlists
+        mkdir -p wordlists
         echo "[*] Mendownload wordlist ${file} ..."
         sleep 3
         wget "${link}"
@@ -41,7 +41,7 @@ function berikan_izin_eksekusi(){
         cp "${lokasi_wush_ng}" "/usr/bin"
 }
 
-read -p "Apakah Anda ingin menginstal wish (Y/n): " n
+read -p "Apakah Anda ingin menginstal wush-ng (Y/n): " n
 if [[ "${n}" == "y" ]] || [[ "${n}" == "Y" ]]; then
         echo "[*] Menginstal wush-ng..."
         sleep 3
