@@ -112,10 +112,10 @@ while true; do
 	fi
 done
 
-# file handshake yang akan dipecahkan kata sandinya
+# file handshake yang akan digunakan untuk memecahkan kata sandi jaringan WPA2.'
 fh="${nufh}-01.cap"
 # wordlist default yang digunakan oleh wush-ng
 wordlist="/usr/share/wordlists/rockyou.txt"
-echo "[*] Memecahkan kata sandi WPA2 menggunakan aircrack-ng pada file Handshake ${fh}..."
+echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake ${fh}..."
 sleep 3
 aircrack-ng -w "${wordlist}" "${fh}"
