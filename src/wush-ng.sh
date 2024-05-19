@@ -192,6 +192,7 @@ function menu_alat_handshake(){
 function mendeskripsi_kata_sandi_jaringan_wpa2(){
         # wordlist default . digunakan oleh wush-ng
         wordlist="/usr/share/wush-ng/wordlists/rockyou.txt"
+	echo ""
         echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}."
         sleep 3
         aircrack-ng -w "${wordlist}" "${ffh}${fh}"
