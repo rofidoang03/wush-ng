@@ -23,7 +23,7 @@ DIATAS."""
 
 lang="id"
 
-print("\r[*] Dengarkan Saya...")
+print("[*] Dengarkan Saya...")
 
 # Membuat suara dari teks
 tts = gTTS(text=text, lang=lang)
@@ -40,8 +40,6 @@ play_obj.wait_done()
 # Menghapus file setelah selesai diputar
 os.remove("output.mp3")
 os.remove("output.wav")
-
-
 
 while True:
     # Meminta input dari pengguna
