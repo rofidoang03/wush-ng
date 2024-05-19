@@ -34,7 +34,7 @@ while True:
 
     # Memeriksa apakah pengguna ingin melanjutkan
     if pilihan.lower() == 'y':
-        echo "[*] Menjalankan wush-ng"
+        print "[*] Menjalankan wush-ng"
         time.sleep(3)
         # Tempatkan kode yang ingin dijalankan jika pengguna ingin melanjutkan di sini
     elif pilihan.lower() == 'n':
