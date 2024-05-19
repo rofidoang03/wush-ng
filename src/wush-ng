@@ -27,4 +27,4 @@
 #
 ############################################################################
 
-python /usr/share/wush-ng/scripts/sound.sh
+python3 /usr/share/wush-ng/scripts/sound.sh
