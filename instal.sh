@@ -23,8 +23,8 @@ function download_rockyou(){
         link="https://github.com/praetorian-inc/Hob0Rules/raw/master/wordlists/rockyou.txt.gz"
         path="/usr/share/wush-ng/wordlists/"
         file="rockyou.txt.gz"
-        cd "${path}"
-        mkdir -p wordlists
+        mkdir -p "${path}"
+        cd "${path}" 
         echo "[*] Mendownload wordlist ${file} ..."
         sleep 3
         wget "${link}"
