@@ -40,15 +40,18 @@ play_obj.wait_done()
 os.remove("output.mp3")
 os.remove("output.wav")
 
-# Meminta input dari pengguna
-pilihan = input("Apakah Anda ingin melanjutkannya (Y/n): ")
 
-# Memeriksa apakah pengguna ingin melanjutkan
-if pilihan.lower() == 'y':
-    pass
-    # Tempatkan kode yang ingin dijalankan jika pengguna ingin melanjutkan di sini
-elif pilihan.lower() == 'n':
-    pass
-else:
-    print("Pilihan tidak valid.")
-    # Tempatkan kode yang ingin dijalankan jika pilihan tidak valid di sini
+
+while True:
+    # Meminta input dari pengguna
+    pilihan = input("Apakah Anda ingin melanjutkannya (Y/n): ")
+
+    # Memeriksa apakah pengguna ingin melanjutkan
+    if pilihan.lower() == 'y':
+        pass
+        # Tempatkan kode yang ingin dijalankan jika pengguna ingin melanjutkan di sini
+    elif pilihan.lower() == 'n':
+        pass
+    else:
+        print("Pilihan tidak valid.")
+        # Tempatkan kode yang ingin dijalankan jika pilihan tidak valid di sini
