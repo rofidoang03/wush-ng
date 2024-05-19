@@ -96,6 +96,7 @@ function memindai_jaringan_wifi(){
 function menu_alat_handshake(){
 
         while true; do
+	        clear
                 echo "************** Menu Alat Handshake **************"
 		echo ""
                 echo "Pilih opsi dari menu:"
