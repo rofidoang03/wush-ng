@@ -42,7 +42,7 @@ function tekan_enter(){
 function pemilihan_antarmuka_jaringan(){
         clear
         echo ""
-        echo "************** Pemilihan Antarmuka Jaringan **************"
+        echo "************** Pemilihan antarmuka jaringan **************"
         echo ""
         echo "Pilih antarmuka jaringan untuk digunakan:"
         echo "--------------"
@@ -52,7 +52,7 @@ function pemilihan_antarmuka_jaringan(){
         for ((i=0; i<"${#ajyt[@]}"; i++)); do
 	        echo "${i}. ${ajyt[$i]}"
         done
-        echo ""
+        echo "--------------"
 
         while true; do
 	        # input memilih antar muka jaringan
@@ -95,7 +95,7 @@ function menu_alat_handshake(){
 
         while true; do
 	        clear
-                echo "************** Menu Alat Handshake **************"
+                echo "************** Menu alat Handshake **************"
 		echo ""
                 echo "Pilih opsi dari menu:"
 		echo "--------------"
@@ -203,7 +203,7 @@ function tentang_dukung_saya(){
         while true;
 	do
                 clear
-		echo "************** Tentang dan Dukung Saya **************"
+		echo "************** Tentang dan dukung Saya **************"
                 echo ""
 		echo "Pilih opsi dari menu:"
                 echo "--------------"
@@ -238,7 +238,7 @@ function tentang_dukung_saya(){
 function wush-ng(){
         while true; do
                 clear
-                echo "************** Menu Utama wush-ng **************"
+                echo "************** Menu utama wush-ng **************"
 		echo ""
                 echo "Pilih opsi dari menu:"
 		echo "--------------"
