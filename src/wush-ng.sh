@@ -80,13 +80,12 @@ function mengaktifkan_mode_monitor(){
 
 # Fungsi untuk mengecek mode operasi interface wireless
 function cek_mode(){
-    # Memeriksa apakah interface yang diberikan valid
-    if ! ip link show "$aj" &> /dev/null; then
-        echo "[-] Antarmuka jaringan $aj tidak ditemukan."
+    # Mendapatkan mode operasi menggunakan iwconfig
+    if ! ip link show "${aj}" &> /dev/null; then
+        echo "[-] Antarmuka jaringan ${aj} tidak ditemukan."
         return 1
     fi
-
-    mode=$(iwconfig "$aj" 2>/dev/null | grep "Mode:" | awk '{print $1}' | cut -d':' -f2)
+    mode=$(iwconfig "$aj" 2>/dev/null | grep "Mode:" | awk '{print $4}' | cut -d':' -f2)
     echo "${mode}"
 }
 
@@ -250,10 +249,11 @@ function tentang_dukung_saya(){
 }
 
 function wush-ng(){
+        m=$(cek_mode)
         while true; do
                 clear
                 echo "************** Menu utama wush-ng **************"
-		echo "Antarmuka jaringan yang dipilih: ${aj}. Mode: ${mode}"
+		echo "Antarmuka jaringan yang dipilih: ${aj}. Mode: ${m}"
                 echo ""
                 echo "Pilih opsi dari menu:"
 		echo "--------------"
