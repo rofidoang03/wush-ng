@@ -138,6 +138,8 @@ function menu_alat_handshake(){
 			                        done
 			                        break
 			                fi
+		                done
+		                ;;
 		        5)
 	                        # posisi airodump-ng
 				pa="80x24+0+0"
