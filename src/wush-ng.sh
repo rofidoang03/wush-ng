@@ -192,7 +192,6 @@ function menu_alat_handshake(){
 }
 
 function mendeskripsi_kata_sandi_jaringan_wpa2(){
-
         while true; do
                 echo ""
                 echo "Anda telah memilih file Handshake selama sesi ini (${ffh}${fh})."
@@ -200,42 +199,28 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
                 read -p "Apakah Anda ingin menggunakan file Handshake yang sudah dipilih ini (Y/n): " kamu_nanya
                 if [[ "${kamu_nanya}" == "y" || "${kamu_nanya}" == "Y" ]]; then
                         while true; do
-                                echo ""
-                                echo "Anda telah memilih BSSID selama sesi ini dan ada dalam file Handshake (${b})."
-                                echo ""
-                                read -p "Apakah Anda ingin menggunakan BSSID yang sudah dipilih ini (Y/n): " kn2
-                                if [[ "${kn2}" == "y" || "${kn2}" == "Y" ]]; then
-				        while true; do
+	                        echo ""
+                                read -p "Silahkan masukkan jalur file wordlist: " jw
+				if [[ ! -z "${jw}" ]]; then
+                                        if [[ -f "${jw}" ]]; then
+						# wordlist default yang digunakan oleh wush-ng
+                                                wordlist="${jw}"
 	                                        echo ""
-                                                read -p "Silahkan masukkan jalur file wordlist: " jw
-						if [[ ! -z "${jw}" ]]; then
-                                                        if [[ -f "${jw}" ]]; then
-							        # wordlist default yang digunakan oleh wush-ng
-                                                                wordlist="${jw}"
-	                                                        echo ""
-                                                                echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}."
-                                                                sleep 3
-                                                                aircrack-ng -w "${wordlist}" "${ffh}${fh}"
-	                                                        break 
-	                                                else
-						                echo "[-] File wordlist ${jw} tidak ditemukan."
-		                                        fi
+                                                echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}."
+                                                sleep 3
+                                                aircrack-ng -w "${wordlist}" "${ffh}${fh}"
+	                                        break 
+	                                else
+						echo "[-] File wordlist ${jw} tidak ditemukan."
+		                        fi
 		      
                                                         
-						else
-                                                        echo "[-] Jalur file wordlist tidak boleh kosong."
-						fi
-							
+				else
+                                        echo "[-] Jalur file wordlist tidak boleh kosong."
+				fi			
 						
-	                                done
-                                        break
-                                elif [[ "${kn2}" == "n" || "${kn2}" == "N" ]]; then
-                                        break
-                                else
-                                        echo "Masukan tidak valid. Harap masukkan Y atau N."
-                                fi
-                        done
-			break
+	                done
+	                break
         elif [[ "${kamu_nanya}" == "n" || "${kamu_nanya}" == "N" ]]; then
 	        while true; do
                         echo ""
@@ -257,7 +242,7 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
                 done
                 break
         else
-                    echo "Masukan tidak valid. Harap masukkan Y atau N."
+                    echo [-] "Masukan tidak valid. Harap masukkan Y atau N."
         fi
         done
 
