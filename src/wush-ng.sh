@@ -205,6 +205,24 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
                                 echo ""
                                 read -p "Apakah Anda ingin menggunakan BSSID yang sudah dipilih ini (Y/n): " kn2
                                 if [[ "${kn2}" == "y" || "${kn2}" == "Y" ]]; then
+				        while true; do
+	                                        echo ""
+                                                read -p "Masukkan jalur file wordlist: " jw
+						if [[ ! -z "${jw}" ]]; then
+                                                        if [[ -f "${jw}" ]]; then
+							        echo "OK"
+	                                                        break 
+	                                                else
+						                echo "[-] File wordlist ${jw} tidak ditemukan."
+		                                        fi
+		      
+                                                        
+						else
+                                                        echo "[-] Jalur file wordlist tidak boleh kosong."
+						fi
+							
+						
+	                                done
                                         break
                                 elif [[ "${kn2}" == "n" || "${kn2}" == "N" ]]; then
                                         break
