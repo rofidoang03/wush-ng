@@ -203,9 +203,8 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
                                 echo ""
 				read -p "Apakah Anda ingin menggunakan BSSID yang sudah dipilih ini (Y/n): " kn2
                         done
-			#break
+			break
                 fi
-		break
         done
 
         # wordlist default . digunakan oleh wush-ng
