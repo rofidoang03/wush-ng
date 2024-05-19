@@ -210,7 +210,12 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
                                                 read -p "Masukkan jalur file wordlist: " jw
 						if [[ ! -z "${jw}" ]]; then
                                                         if [[ -f "${jw}" ]]; then
-							        echo "OK"
+							        # wordlist default . digunakan oleh wush-ng
+                                                                wordlist="${wb}"
+	                                                        echo ""
+                                                                echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}." kamu_nanya
+                                                                sleep 3
+                                                                aircrack-ng -w "${wordlist}" "${ffh}${fh}"
 	                                                        break 
 	                                                else
 						                echo "[-] File wordlist ${jw} tidak ditemukan."
@@ -238,12 +243,7 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
         fi
         done
 
-        # wordlist default . digunakan oleh wush-ng
-        wordlist="/usr/share/wush-ng/wordlists/rockyou.txt"
-	echo ""
-        echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}." kamu_nanya
-        sleep 3
-        aircrack-ng -w "${wordlist}" "${ffh}${fh}"
+        
 }
 
 function tentang_dukung_saya(){
