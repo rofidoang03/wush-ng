@@ -34,7 +34,7 @@ function cek_root(){
         fi
 }
 
-function pemilihan_antar_muka_jaringan(){
+function pemilihan_antarmuka_jaringan(){
         clear
         echo ""
         echo "************** Pemilihan Antarmuka Jaringan **************"
