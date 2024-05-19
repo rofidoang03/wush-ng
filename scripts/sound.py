@@ -52,7 +52,7 @@ os.remove("keluaran.wav")
 
 while True:
     # Meminta input dari pengguna
-    pilihan = input("Apakah Anda ingin melanjutkannya (Y/n): ")
+    pilihan = input("\nApakah Anda ingin melanjutkannya (Y/n): ")
 
     # Memeriksa apakah pengguna ingin melanjutkan
     if pilihan.lower() == 'y':
