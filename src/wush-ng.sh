@@ -182,6 +182,7 @@ function tentang_dukung_saya(){
 			        ;;
 			*)
                                 echo "Error"
+				tekan_enter
 		                ;;
 		esac
 			 
