@@ -33,8 +33,7 @@ if [[ "$EUID" -ne 0 ]]; then
 fi
 
 # Menampilkan teks di tengah-tengah layar baik secara horizontal maupun vertikal
-text="Selamat datang di wush-ng."
-text=$(cowsay "${text}")
+text="Teks di tengah-tengah layar"
 
 # Mendapatkan ukuran layar
 cols=$(tput cols)
@@ -48,8 +47,8 @@ offset_y=$((($rows / 2)))
 
 # Menampilkan teks di tengah-tengah layar
 clear
-printf "%*s\n" $offset_y
-printf "%*s\n" $offset_x "$text"
+printf "%*s\n" $((offset_y)) "$text"
+
 
 read -p ""
 
