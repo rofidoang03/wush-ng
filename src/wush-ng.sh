@@ -242,7 +242,7 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
 			read -p "Silahkan masukkan jalur file Handshake: " jfh
                         if [[ ! -z "${jfh}" ]]; then
 			        if [[ -f "${jfh}" ]];
-	                                if [[ "${jfh##*.}" == "cap" ]]; 
+	                                if [[ "${jfh##*.}" == "cap" ]]; then
 				                break
 		                        else
 			                        echo "[-] File handshake ${jfh} tidak benar. Harap masukkan file Handshake yang benar (.cap)."
