@@ -32,6 +32,27 @@ if [[ "$EUID" -ne 0 ]]; then
 	exit 1
 fi
 
+# Menampilkan teks di tengah-tengah layar baik secara horizontal maupun vertikal
+text="Selamat datang di wush-ng."
+text=$(cowsay "${text}")
+
+# Mendapatkan ukuran layar
+cols=$(tput cols)
+rows=$(tput lines)
+
+# Menghitung posisi tengah horizontal
+offset_x=$((($cols - ${#text}) / 2))
+
+# Menghitung posisi tengah vertikal
+offset_y=$((($rows / 2)))
+
+# Menampilkan teks di tengah-tengah layar
+clear
+printf "%*s\n" $offset_y
+printf "%*s\n" $offset_x "$text"
+
+read -p "'
+
 clear
 echo ""
 echo "************** Pemilihan antarmuka jaringan **************"
