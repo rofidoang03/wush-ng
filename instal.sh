@@ -6,6 +6,7 @@ function instal_depedensi(){
                 "aircrack-ng"
                 "xterm"
                 "wget"
+                "gzip"
                 )
         echo "[*] Menginstal semua depedensi yang diperlukan..."
         sleep 3
@@ -21,17 +22,20 @@ function instal_depedensi(){
 
 function download_rockyou(){
         link="https://github.com/praetorian-inc/Hob0Rules/raw/master/wordlists/rockyou.txt.gz"
-        path="/usr/share/wush-ng/wordlists/"
-        file="rockyou.txt.gz"
+        path="/usr/share/wush-ng/wordlists"
+        wordlist="rockyou.txt.gz"
         mkdir -p "${path}"
         cd "${path}" 
-        echo "[*] Mendownload wordlist ${file} ..."
+        echo "[*] Mendownload wordlist ${wordlist}..."
         sleep 3
         wget "${link}"
-        echo "[+] Wordlist ${file} berhasil didownload."
-        echo "[*] Mengekstrak wordlist ${file} ..."
+        echo "[+] Wordlist ${wordlist} berhasil didownload."
         sleep 3
-        echo "[+] Wordlist ${file} berhasil diekstrak. dan disimpan dalam folder ${path}."
+        echo "[*] Mengekstrak wordlist ${wordlist} ..."
+        gzip -d "${patj}${wordlist}"
+        sleep 3
+        echo "[+] Wordlist ${wordlist} berhasil diekstrak. dan disimpan dalam folder ${path}."
+        sleep 3
         cd ..
 }
 
@@ -51,6 +55,7 @@ if [[ "${n}" == "y" ]] || [[ "${n}" == "Y" ]]; then
         echo "[+] wush-ng berhasil diinstal."
         sleep 3
         echo "[+] Ketikkan perintah wush-ng untuk menjalankannya."
+        sleep 3
         exit 0
 else
         echo "[-] Proses instalasi wush-ng dibatalkan."
