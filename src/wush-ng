@@ -105,6 +105,15 @@ while true; do
 				# menunggu proses airodump-ng dan aireplay-ng
 				wait "${airodump_pid}"
 				wait "${aireplay_pid}"
+                                # file handshake yang akan digunakan untuk memecahkan kata sandi jaringan WPA2.'
+                                fh="${nufh}-01.cap"
+                                # folder untuk menyimpan file handshake
+                                ffh="/usr/share/wush-ng/hs/"
+                                # menghapus semua file csv dan xml
+                                rm *csv *xml
+                                mv "${fh}" "${ffh}"
+                                echo "[+] File Handshake tersimpan di: ${ffh}${fh}."
+                                sleep 3
 				break
 			fi
 		done
@@ -112,10 +121,8 @@ while true; do
 	fi
 done
 
-# file handshake yang akan digunakan untuk memecahkan kata sandi jaringan WPA2.'
-fh="${nufh}-01.cap"
 # wordlist default yang digunakan oleh wush-ng
 wordlist="/usr/share/wush-ng/wordlists/rockyou.txt"
 echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake ${fh}..."
 sleep 3
-aircrack-ng -w "${wordlist}" "${fh}"
+aircrack-ng -w "${wordlist}" "${ffh}${fh}"
