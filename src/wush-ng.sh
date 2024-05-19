@@ -173,12 +173,16 @@ function tentang_dukung_saya(){
 		case "${tdds}" in
                         1)
 			        echo "Masih dalam tahap pengembangan 😁"
+	                        ;;
 	                2)
 		                echo "Masih dalam tahap pengembangan 😁"
+		                ;;
 		        3)
 	                        wush-ng
+			        ;;
 			*)
                                 echo "Error"
+		                ;;
 		esac
 			 
         done
