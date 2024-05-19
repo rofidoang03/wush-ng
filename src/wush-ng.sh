@@ -133,6 +133,9 @@ function menu_alat_handshake(){
 			                                read -p "Silahkan masukkan nomor channel yang digunakan oleh Access Point: " c
 			                                if [[ -z "${c}" ]] || ! [[ "${c}" =~ ^[0-9]+$ ]]; then
 				                                echo "[-] Nomor channel tidak benar. Harap masukkan nomor channel yang benar."
+				                        else
+			                                        tekan_enter
+					                        break 
 				                        fi
 			                        done
 			                        break
