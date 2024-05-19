@@ -230,18 +230,18 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
 	                                if [[ "${jfh##*.}" == "cap" ]]; then
 				                while true; do
 	                                                echo ""
-                                                        read -p "Silahkan masukkan jalur file wordlist: " jw
-				                        if [[ ! -z "${jw}" ]]; then
-                                                                if [[ -f "${jw}" ]]; then
+                                                        read -p "Silahkan masukkan jalur file wordlist: " jw2
+				                        if [[ ! -z "${jw2}" ]]; then
+                                                                if [[ -f "${jw2}" ]]; then
 						                        # wordlist default yang digunakan oleh wush-ng
-                                                                        wordlist="${jw}"
+                                                                        wordlist2="${jw2}"
 	                                                                echo ""
                                                                         echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}."
                                                                         sleep 3
-                                                                        aircrack-ng -w "${wordlist}" "${ffh}${fh}"
+                                                                        aircrack-ng -w "${wordlist2}" "${ffh}${fh}"
 	                                                                break 
 	                                                        else
-						                        echo "[-] File wordlist ${jw} tidak ditemukan."
+						                        echo "[-] File wordlist ${jw2} tidak ditemukan."
 		                                                fi
 				                        else
                                                                 echo "[-] Jalur file wordlist tidak boleh kosong."
