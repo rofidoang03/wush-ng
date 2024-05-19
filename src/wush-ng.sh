@@ -248,7 +248,7 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
 			                        echo "[-] File handshake ${jfh} tidak benar. Harap masukkan file Handshake yang benar (.cap)."
 			                fi
 	                        else
-	                                echo "File handshake ${jfh} tidak ditemukan."
+	                                echo "[-] File handshake ${jfh} tidak ditemukan."
 				fi
 			      
 	                else
