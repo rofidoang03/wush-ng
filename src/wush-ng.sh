@@ -51,7 +51,7 @@ clear
 printf "%*s\n" $offset_y
 printf "%*s\n" $offset_x "$text"
 
-read -p "'
+read -p ""
 
 clear
 echo ""
