@@ -192,19 +192,29 @@ function menu_alat_handshake(){
 function mendeskripsi_kata_sandi_jaringan_wpa2(){
 
         while true; do
-	        echo ""
-                echo "Anda telah memilih file Handshake selama sesi ini (${ffh}${fh})."
-		echo ""
-                read -p "Apakah Anda ingin menggunakan file pengambilan yang sudah dipilih ini (Y/n): "
-		if [[ "${kamu_nanya}" == "y" ]] || [[ ${kamu_nanya} == "Y" ]]; then
-                        while true; do
-                                echo ""
-				echo "Anda telah memilih BSSID selama sesi ini dan ada dalam file Handshake (${b})."
-                                echo ""
-				read -p "Apakah Anda ingin menggunakan BSSID yang sudah dipilih ini (Y/n): " kn2
-                        done
-			break
+        echo ""
+        echo "Anda telah memilih file Handshake selama sesi ini (${ffh}${fh})."
+        echo ""
+        read -p "Apakah Anda ingin menggunakan file pengambilan yang sudah dipilih ini (Y/n): " kamu_nanya
+        if [[ "${kamu_nanya}" == "y" || "${kamu_nanya}" == "Y" ]]; then
+            while true; do
+                echo ""
+                echo "Anda telah memilih BSSID selama sesi ini dan ada dalam file Handshake (${b})."
+                echo ""
+                read -p "Apakah Anda ingin menggunakan BSSID yang sudah dipilih ini (Y/n): " kn2
+                if [[ "${kn2}" == "y" || "${kn2}" == "Y" ]]; then
+                    break 2
+                elif [[ "${kn2}" == "n" || "${kn2}" == "N" ]]; then
+                    break
+                else
+                    echo "Masukan tidak valid. Harap masukkan Y atau N."
                 fi
+            done
+        elif [[ "${kamu_nanya}" == "n" || "${kamu_nanya}" == "N" ]]; then
+        break
+        else
+            echo "Masukan tidak valid. Harap masukkan Y atau N."
+        fi
         done
 
         # wordlist default . digunakan oleh wush-ng
