@@ -36,6 +36,7 @@ while True:
     if pilihan.lower() == 'y':
         print "[*] Menjalankan wush-ng"
         time.sleep(3)
+        break
         # Tempatkan kode yang ingin dijalankan jika pengguna ingin melanjutkan di sini
     elif pilihan.lower() == 'n':
         exit(1)
