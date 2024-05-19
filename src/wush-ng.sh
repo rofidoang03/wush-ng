@@ -85,6 +85,7 @@ function menonaktifkan_mode_monitor(){
 }
 
 function memindai_jaringan_wifi(){
+        echo ""
         echo "[*] Memindai jaringan Wi-Fi menggunakan airodump-ng pada antarmuka jaringan ${aj}..."
         sleep 3
         airodump-ng "${aj}"
