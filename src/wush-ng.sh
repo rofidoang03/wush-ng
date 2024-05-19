@@ -134,9 +134,9 @@ function menu_alat_handshake(){
 			                                if [[ -z "${c}" ]] || ! [[ "${c}" =~ ^[0-9]+$ ]]; then
 				                                echo "[-] Nomor channel tidak benar. Harap masukkan nomor channel yang benar."
 				                        fi
-			                                break 2
+			                                break
 			                        done
-			                        # break
+			                        break
 			                fi
 		                done
 		                ;;
