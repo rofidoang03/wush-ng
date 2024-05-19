@@ -190,10 +190,27 @@ function menu_alat_handshake(){
 }
 
 function mendeskripsi_kata_sandi_jaringan_wpa2(){
+
+        while true; do
+	        echo ""
+                echo "Anda telah memilih file Handshake selama sesi ini (${ffh}${fh})."
+		echo ""
+                read -p "Apakah Anda ingin menggunakan file pengambilan yang sudah dipilih ini (Y/n): "
+		if [[ "${kamu_nanya}" == "y" ]] || [[ ${kamu_nanya} == "Y" ]]; then
+                        while true; do
+                                echo ""
+				echo "Anda telah memilih BSSID selama sesi ini dan ada dalam file Handshake (${b})."
+                                echo ""
+				read -p "Apakah Anda ingin menggunakan BSSID yang sudah dipilih ini (Y/n): " kn2
+                                break
+                        done
+                fi
+        done
+
         # wordlist default . digunakan oleh wush-ng
         wordlist="/usr/share/wush-ng/wordlists/rockyou.txt"
 	echo ""
-        echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}."
+        echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}." kamu_nanya
         sleep 3
         aircrack-ng -w "${wordlist}" "${ffh}${fh}"
 }
