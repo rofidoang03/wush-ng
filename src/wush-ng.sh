@@ -76,19 +76,6 @@ function mengaktifkan_mode_monitor(){
         airmon-ng start "${aj}"
 }
 
-#!/bin/bash
-
-# Fungsi untuk mengecek mode operasi interface wireless
-function cek_mode(){
-    # Mendapatkan mode operasi menggunakan iwconfig
-    if ! ip link show "${aj}" &> /dev/null; then
-        echo "[-] Antarmuka jaringan ${aj} tidak ditemukan."
-        return 1
-    fi
-    mode=$(iwconfig "$aj" 2>/dev/null | grep "Mode:" | awk '{print $4}' | cut -d':' -f2)
-    echo "${mode}"
-}
-
 function menonaktifkan_mode_monitor(){
         echo ""
         echo "[*] Menonaktifkan mode monitor pada antarmuka jaringan ${aj} menggunakan airmon-ng..."
@@ -249,11 +236,9 @@ function tentang_dukung_saya(){
 }
 
 function wush-ng(){
-        m=$(cek_mode)
         while true; do
                 clear
                 echo "************** Menu utama wush-ng **************"
-		echo "Antarmuka jaringan yang dipilih: ${aj}. Mode: ${m}"
                 echo ""
                 echo "Pilih opsi dari menu:"
 		echo "--------------"
