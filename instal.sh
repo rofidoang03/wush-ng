@@ -32,7 +32,7 @@ function download_rockyou(){
         echo "[+] Wordlist ${wordlist} berhasil didownload."
         sleep 3
         echo "[*] Mengekstrak wordlist ${wordlist} ..."
-        gzip -d "${patj}${wordlist}"
+        gzip -d "${path}${wordlist}"
         sleep 3
         echo "[+] Wordlist ${wordlist} berhasil diekstrak. dan disimpan dalam folder ${path}."
         sleep 3
