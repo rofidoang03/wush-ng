@@ -259,15 +259,19 @@ function wush-ng(){
 	                        ;;
                         2)
 			        mengaktifkan_mode_monitor
+	                        tekan_enter
 	                        ;;
 			3)
                                 menonaktifkan_mode_monitor
+				tekan_enter
 				;;
                         4)
                                 menu_alat_handshake
+				# tekan_enter
                                 ;;
 			5)
                                 mendeskripsi_kata_sandi_jaringan_wpa2
+				tekan_enter
 				;;
                         6) 
 			        tentang_dukung_saya
