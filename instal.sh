@@ -11,6 +11,10 @@ function instal_depedensi(){
                 "xterm"
                 "wget"
                 "gzip"
+                "fffmpeg"
+                "python3"
+                "python3-pip"
+                
                 )
         echo "[*] Menginstal semua depedensi yang diperlukan..."
         sleep 3
