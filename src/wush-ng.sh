@@ -32,8 +32,6 @@ if [[ "$EUID" -ne 0 ]]; then
 	exit 1
 fi
 
-python3 /usr/share/wush-ng/scripts/sound.py
-
 clear
 echo ""
 echo "************** Pemilihan antarmuka jaringan **************"
