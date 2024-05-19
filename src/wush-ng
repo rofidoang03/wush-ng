@@ -123,6 +123,6 @@ done
 
 # wordlist default yang digunakan oleh wush-ng
 wordlist="/usr/share/wush-ng/wordlists/rockyou.txt"
-echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake ${fh}..."
+echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}."
 sleep 3
 aircrack-ng -w "${wordlist}" "${ffh}${fh}"
