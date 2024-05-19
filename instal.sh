@@ -1,6 +1,10 @@
 #!/bin/bash
 # script untuk menginstal wush-ng
 
+function membuat_folder_handshake(){
+        mkdir -p "file_handshake"
+}
+
 function instal_depedensi(){
         depedensi=(
                 "aircrack-ng"
@@ -49,6 +53,7 @@ read -p "Apakah Anda ingin menginstal wush-ng (Y/n): " n
 if [[ "${n}" == "y" ]] || [[ "${n}" == "Y" ]]; then
         echo "[*] Menginstal wush-ng..."
         sleep 3
+        membuat_folder_handshake
         instal_depedensi
         download_rockyou
         berikan_izin_eksekusi
@@ -61,5 +66,3 @@ else
         echo "[-] Proses instalasi wush-ng dibatalkan."
         exit 1
 fi
-                
-
