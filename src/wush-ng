@@ -108,7 +108,7 @@ while true; do
                                 # file handshake yang akan digunakan untuk memecahkan kata sandi jaringan WPA2.'
                                 fh="${nufh}-01.cap"
                                 # folder untuk menyimpan file handshake
-                                ffh="/usr/share/wush-ng/hs/"
+                                ffh="/usr/share/wush-ng/file_handshake/"
                                 # menghapus semua file csv dan xml
                                 rm *csv *xml
                                 mv "${fh}" "${ffh}"
