@@ -157,7 +157,7 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
 }
 
 function tentang_dukung_saya(){
-        tentang="wush-ng adalah program bash sederhana yang dibuat untuk melakukan audit keamanan jaringan Wi-Fi."
+        tentang="wush-ng adalah sebuah program Bash sederhana yang dibuat untuk melakukan audit keamanan jaringan Wi-Fi."
 	url="https://github.com/rofidoang03/wush-ng"
         while true;
 	do
@@ -174,6 +174,7 @@ function tentang_dukung_saya(){
                 read -p "[»] " tdds
 		case "${tdds}" in
                         1)
+			        echo ""
 			        echo "${tentang}"
 	                        tekan_enter
 	                        ;;
