@@ -2,6 +2,15 @@ from gtts import gTTS
 import simpleaudio as sa
 import os
 import time 
+import datetime
+import pytz
+
+# Menyesuaikan zona waktu menjadi Waktu Indonesia Barat (WIB)
+wib_timezone = pytz.timezone('Asia/Jakarta')
+waktu_sekarang = datetime.datetime.now(wib_timezone)
+
+# Memformat waktu dalam format yang diinginkan
+formatted_time = waktu_sekarang.strftime("%d-%m-%Y %H:%M:%S WIB")
 
 text="""PERINGATAN
 
@@ -47,7 +56,7 @@ while True:
 
     # Memeriksa apakah pengguna ingin melanjutkan
     if pilihan.lower() == 'y':
-        print("[*] Menjalankan wush-ng")
+        print(f"[*] Memulai wush-ng pada {formatted_time}")
         time.sleep(3)
         os.system("bash /usr/share/wush-ng/src/wush-ng.sh")
         break
