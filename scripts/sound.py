@@ -22,7 +22,7 @@ DIATAS."""
 
 lang="id"
 
-print("[*] Dengarkan Saya...")
+print("[*] Dengarkan Saya...\r")
 
 # Membuat suara dari teks
 tts = gTTS(text=text, lang=lang)
