@@ -202,8 +202,8 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
 				echo "Anda telah memilih BSSID selama sesi ini dan ada dalam file Handshake (${b})."
                                 echo ""
 				read -p "Apakah Anda ingin menggunakan BSSID yang sudah dipilih ini (Y/n): " kn2
-                                break
                         done
+			break
                 fi
         done
 
