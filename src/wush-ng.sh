@@ -207,15 +207,15 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
                                 if [[ "${kn2}" == "y" || "${kn2}" == "Y" ]]; then
 				        while true; do
 	                                        echo ""
-                                                read -p "Masukkan jalur file wordlist: " jw
+                                                read -p "Silahkan masukkan jalur file wordlist: " jw
 						if [[ ! -z "${jw}" ]]; then
                                                         if [[ -f "${jw}" ]]; then
-							        # wordlist default . digunakan oleh wush-ng
-                                                                wordlist="${wb}"
+							        # wordlist default yang digunakan oleh wush-ng
+                                                                wordlist="${jw}"
 	                                                        echo ""
                                                                 echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}."
                                                                 sleep 3
-                                                                aircrack-ng -w "${wh}" "${ffh}${fh}"
+                                                                aircrack-ng -w "${wordlist}" "${ffh}${fh}"
 	                                                        break 
 	                                                else
 						                echo "[-] File wordlist ${jw} tidak ditemukan."
@@ -237,6 +237,24 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
                         done
 			break
         elif [[ "${kamu_nanya}" == "n" || "${kamu_nanya}" == "N" ]]; then
+	        while true; do
+                        echo ""
+			read -p "Silahkan masukkan jalur file Handshake: " jfh
+                        if [[ ! -z "${jfh}" ]]; then
+			        if [[ -f "${jfh}" ]];
+	                                if [[ "${jfh##*.}" == "cap" ]]; 
+				                break
+		                        else
+			                        echo "[-] File handshake ${jfh} tidak benar. Harap masukkan file Handshake yang benar (.cap)."
+			                fi
+	                        else
+	                                echo "File handshake ${jfh} tidak ditemukan."
+				fi
+			      
+	                else
+			        echo "[-] Jalur file Handshake tidak boleh kosong."
+		        fi
+                done
                 break
         else
                     echo "Masukan tidak valid. Harap masukkan Y atau N."
