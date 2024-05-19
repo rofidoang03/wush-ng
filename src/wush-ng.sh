@@ -179,7 +179,13 @@ function menu_alat_handshake(){
                                 sleep 3
 				tekan_enter
                                 ;;
-	        
+	                6)
+		                wush-ng
+		                ;;
+	                *)
+		                echo "Error"
+		                tekan_enter
+		                ;;
                 esac
         done
         
