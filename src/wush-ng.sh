@@ -241,7 +241,7 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
                         echo ""
 			read -p "Silahkan masukkan jalur file Handshake: " jfh
                         if [[ ! -z "${jfh}" ]]; then
-			        if [[ -f "${jfh}" ]];
+			        if [[ -f "${jfh}" ]]; then
 	                                if [[ "${jfh##*.}" == "cap" ]]; then
 				                break
 		                        else
