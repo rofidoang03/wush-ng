@@ -74,7 +74,6 @@ function mengaktifkan_mode_monitor(){
         sleep 3
         airmon-ng check kill
         airmon-ng start "${aj}"
-	tekan_enter
 }
 
 function menonaktifkan_mode_monitor(){
@@ -83,7 +82,6 @@ function menonaktifkan_mode_monitor(){
         sleep 3
         airmon-ng sleep "${aj}"
 	systemctl restart NetworkManager
-        tekan_enter
 }
 
 function memindai_jaringan_wifi(){
