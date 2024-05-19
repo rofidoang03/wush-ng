@@ -1,6 +1,7 @@
 from gtts import gTTS
 import simpleaudio as sa
 import os
+import time 
 
 text="""PERINGATAN
 
@@ -48,10 +49,11 @@ while True:
 
     # Memeriksa apakah pengguna ingin melanjutkan
     if pilihan.lower() == 'y':
-        pass
+        echo "[*] Menjalankan wush-ng"
+        time.sleep(3)
         # Tempatkan kode yang ingin dijalankan jika pengguna ingin melanjutkan di sini
     elif pilihan.lower() == 'n':
-        pass
+        exit(1)
     else:
         print("Pilihan tidak valid.")
         # Tempatkan kode yang ingin dijalankan jika pilihan tidak valid di sini
