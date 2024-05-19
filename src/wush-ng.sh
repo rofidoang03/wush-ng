@@ -195,4 +195,9 @@ function wush-ng(){
 	done
 }
 
-wush-ng 
+function wush(){
+        pemilihan_antarmuka_jaringan
+	wush-ng
+}
+
+wush
