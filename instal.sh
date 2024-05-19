@@ -22,7 +22,7 @@ function instal_depedensi(){
 
 function download_rockyou(){
         link="https://github.com/praetorian-inc/Hob0Rules/raw/master/wordlists/rockyou.txt.gz"
-        path="/usr/share/wush-ng/wordlists"
+        path="/usr/share/wush-ng/wordlists/"
         wordlist="rockyou.txt.gz"
         mkdir -p "${path}"
         cd "${path}" 
