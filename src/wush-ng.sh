@@ -149,11 +149,39 @@ function menu_alat_handshake(){
 }
 
 function mendeskripsi_kata_sandi_jaringan_wpa2(){
-        # wordlist default yang digunakan oleh wush-ng
+        # wordlist default . digunakan oleh wush-ng
         wordlist="/usr/share/wush-ng/wordlists/rockyou.txt"
         echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}."
         sleep 3
         aircrack-ng -w "${wordlist}" "${ffh}${fh}"
+}
+
+function tentang_dukung_saya(){
+        while true;
+	do
+                clear
+		echo "************** Tentang dan Dukung Saya **************"
+                echo ""
+		echo "Pilih opsi dari menu:"
+                echo "--------------"
+                echo "1. Tentang"
+		echo "2. Dukung Saya"
+                echo "--------------"
+                echo "3. Kembali ke menu utama"
+		echo "--------------"
+                read -p "[»] " tdds
+		case "${tdds}" in
+                        1)
+			        echo "Masih dalam tahap pengembangan 😁"
+	                2)
+		                echo "Masih dalam tahap pengembangan 😁"
+		        3)
+	                        wush-ng
+			*)
+                                echo "Error"
+		esac
+			 
+        done
 }
 
 function wush-ng(){
@@ -161,7 +189,7 @@ function wush-ng(){
                 clear
                 echo "************** Menu Utama wush-ng **************"
 		echo ""
-                echo "Silahkan pilih opsi dari menu:"
+                echo "Pilih opsi dari menu:"
 		echo "--------------"
                 echo "1. Pilih antarmuka jaringan yang lain"
 		echo "2. Aktifkan mode monitor"
@@ -170,7 +198,7 @@ function wush-ng(){
                 echo "4. Menu alat handshake"
 		echo "5. Deskripsi kata sandi jaringan WPA2"
                 echo "--------------"
-		echo "6. Tentang, Dukung Saya"
+		echo "6. Tentang dan Dukung Saya"
                 echo "7. Keluar"
 		echo "--------------"
                 read -p "[»] " main
@@ -191,7 +219,7 @@ function wush-ng(){
                                 mendeskripsi_kata_sandi_jaringan_wpa2
 				;;
                         6) 
-			        echo "Masih dalam tahap pengembangan 😁"
+			        tentang_dukung_saya
 	                        ;;
 	                7)
 		                exit 0
