@@ -6,11 +6,11 @@ import datetime
 import pytz
 
 # Menyesuaikan zona waktu menjadi Waktu Indonesia Barat (WIB)
-wib_timezone = pytz.timezone('Asia/Jakarta')
-waktu_sekarang = datetime.datetime.now(wib_timezone)
+zonawaktu_wib = pytz.timezone('Asia/Jakarta')
+waktu_sekarang = datetime.datetime.now(zonawaktu_wib)
 
 # Memformat waktu dalam format yang diinginkan
-formatted_time = waktu_sekarang.strftime("%d-%m-%Y %H:%M:%S WIB")
+format_waktu = waktu_sekarang.strftime("%d-%m-%Y %H:%M:%S WIB")
 
 text="""PERINGATAN
 
@@ -30,25 +30,25 @@ DENGAN MENGGUNAKAN PROGRAM INI, ANDA MENYATAKAN
 BAHWA ANDA MEMAHAMI DAN MENERIMA SYARAT DAN KETENTUAN
 DIATAS."""
 
-lang="id"
+bahasa="id"
 
 print("[*] Dengarkan Saya...")
 
 # Membuat suara dari teks
-tts = gTTS(text=text, lang=lang)
-tts.save("output.mp3")
+tts = gTTS(text=text, lang=bahasa)
+tts.save("keluaran.mp3")
 
 # Menggunakan ffmpeg untuk mengonversi file MP3 ke WAV
-os.system("ffmpeg -loglevel panic -i output.mp3 -acodec pcm_s16le -ac 2 -ar 44100 output.wav")
+os.system("ffmpeg -loglevel panic -i keluaran.mp3 -acodec pcm_s16le -ac 2 -ar 44100 keluaran.wav")
 
 # Memuat file WAV menggunakan simpleaudio
-wave_obj = sa.WaveObject.from_wave_file("output.wav")
+wave_obj = sa.WaveObject.from_wave_file("keluaran.wav")
 play_obj = wave_obj.play()
 play_obj.wait_done()
 
 # Menghapus file setelah selesai diputar
-os.remove("output.mp3")
-os.remove("output.wav")
+os.remove("keluaran.mp3")
+os.remove("keluaran.wav")
 
 while True:
     # Meminta input dari pengguna
