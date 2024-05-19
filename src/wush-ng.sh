@@ -34,6 +34,11 @@ function cek_root(){
         fi
 }
 
+function tekan_enter(){
+        echo ""
+        read -p "Tekan [Enter] untuk melanjutkan..."
+}
+
 function pemilihan_antarmuka_jaringan(){
         clear
         echo ""
@@ -69,6 +74,7 @@ function mengaktifkan_mode_monitor(){
         sleep 3
         airmon-ng check kill
         airmon-ng start "${aj}"
+	tekan_enter
 }
 
 function menonaktifkan_mode_monitor(){
@@ -77,6 +83,7 @@ function menonaktifkan_mode_monitor(){
         sleep 3
         airmon-ng sleep "${aj}"
 	systemctl restart NetworkManager
+        tekan_enter
 }
 
 function memindai_jaringan_wifi(){
@@ -132,6 +139,7 @@ function menu_alat_handshake(){
                                         mv "${fh}" "${ffh}"
                                         echo "[+] File Handshake tersimpan di: ${ffh}${fh}."
                                         sleep 3
+					tekan_enter
 				        break
 			        fi
 		        done
@@ -180,7 +188,7 @@ function wush-ng(){
                                 menu_alat_handshake
                                 ;;
 			5)
-                                mendeskripsi_kata_sandi_jaringan_wp2
+                                mendeskripsi_kata_sandi_jaringan_wpa2
 				;;
                         6) 
 			        echo "Masih dalam tahap pengembangan 😁"
