@@ -192,56 +192,98 @@ function menu_alat_handshake(){
 }
 
 function mendeskripsi_kata_sandi_jaringan_wpa2(){
-        while true; do
-                echo ""
-                echo "Anda telah memilih file Handshake selama sesi ini (${ffh}${fh})."
-                echo ""
-                read -p "Apakah Anda ingin menggunakan file Handshake yang sudah dipilih ini (Y/n): " kamu_nanya
-                if [[ "${kamu_nanya}" == "y" || "${kamu_nanya}" == "Y" ]]; then
-                        while true; do
-	                        echo ""
-                                read -p "Silahkan masukkan jalur file wordlist: " jw
-				if [[ ! -z "${jw}" ]]; then
-                                        if [[ -f "${jw}" ]]; then
-						# wordlist default yang digunakan oleh wush-ng
-                                                wordlist="${jw}"
-	                                        echo ""
-                                                echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}."
-                                                sleep 3
-                                                aircrack-ng -w "${wordlist}" "${ffh}${fh}"
-	                                        break 
+        th="${ffh}${fh}"
+	if [[ -f "${th}" ]]; then
+                while true; do
+                        echo ""
+                        echo "Anda telah memilih file Handshake selama sesi ini (${ffh}${fh})."
+                        echo "" ""
+                        read -p "Apakah Anda ingin menggunakan file Handshake yang sudah dipilih ini (Y/n): " kamu_nanya
+                        if [[ "${kamu_nanya}" == "y" || "${kamu_nanya}" == "Y" ]]; then
+                                while true; do
+	                                echo ""
+                                        read -p "Silahkan masukkan jalur file wordlist: " jw
+				        if [[ ! -z "${jw}" ]]; then
+                                                if [[ -f "${jw}" ]]; then
+						        # wordlist default yang digunakan oleh wush-ng
+                                                        wordlist="${jw}"
+	                                                echo ""
+                                                        echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}."
+                                                        sleep 3
+                                                        aircrack-ng -w "${wordlist}" "${ffh}${fh}"
+	                                                break 
+	                                        else
+						        echo "[-] File wordlist ${jw} tidak ditemukan."
+		                                fi                                     
+				        else
+                                                echo "[-] Jalur file wordlist tidak boleh kosong."
+				        fi						
+	                        done
+	                        break
+                elif [[ "${kamu_nanya}" == "n" || "${kamu_nanya}" == "N" ]]; then
+	                while true; do
+                                echo ""
+			        read -p "Silahkan masukkan jalur file Handshake: " jfh
+                                if [[ ! -z "${jfh}" ]]; then
+			                if [[ -f "${jfh}" ]]; then
+	                                        if [[ "${jfh##*.}" == "cap" ]]; then
+				                        while true; do
+	                                                        echo ""
+                                                                read -p "Silahkan masukkan jalur file wordlist: " jw2
+				                                if [[ ! -z "${jw2}" ]]; then
+                                                                        if [[ -f "${jw2}" ]]; then
+						                                # wordlist default yang digunakan oleh wush-ng
+                                                                                wordlist2="${jw2}"
+	                                                                        echo ""
+                                                                                echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}."
+                                                                                sleep 3
+                                                                                aircrack-ng -w "${wordlist2}" "${ffh}${fh}"
+	                                                                        break 
+	                                                                else
+						                                echo "[-] File wordlist ${jw2} tidak ditemukan."
+		                                                        fi
+				                                else
+                                                                        echo "[-] Jalur file wordlist tidak boleh kosong."
+				                                fi				
+	                                                done
+				                        break
+		                                else
+			                                echo "[-] File handshake ${jfh} tidak benar. Harap masukkan file Handshake yang benar (.cap)."
+			                        fi
 	                                else
-						echo "[-] File wordlist ${jw} tidak ditemukan."
-		                        fi
-		      
-                                                        
-				else
-                                        echo "[-] Jalur file wordlist tidak boleh kosong."
-				fi			
-						
-	                done
-	                break
-        elif [[ "${kamu_nanya}" == "n" || "${kamu_nanya}" == "N" ]]; then
+	                                        echo "[-] File handshake ${jfh} tidak ditemukan."
+				        fi
+			      
+	                        else
+			                echo "[-] Jalur file Handshake tidak boleh kosong."
+		                fi
+                        done
+                        break
+                else
+                        echo [-] "Masukan tidak valid. Harap masukkan Y atau N."
+                fi
+                done
+        else
 	        while true; do
                         echo ""
-			read -p "Silahkan masukkan jalur file Handshake: " jfh
-                        if [[ ! -z "${jfh}" ]]; then
-			        if [[ -f "${jfh}" ]]; then
-	                                if [[ "${jfh##*.}" == "cap" ]]; then
+			read -p "Silahkan masukkan jalur file Handshake: " jfh2
+                        if [[ ! -z "${jfh2}" ]]; then
+			        if [[ -f "${jfh2}" ]]; then
+	                                if [[ "${jfh2##*.}" == "cap" ]]; then
 				                while true; do
 	                                                echo ""
-                                                        read -p "Silahkan masukkan jalur file wordlist: " jw2
-				                        if [[ ! -z "${jw2}" ]]; then
-                                                                if [[ -f "${jw2}" ]]; then
+                                                        read -p "Silahkan masukkan jalur file wordlist: " jw3
+				                        if [[ ! -z "${jw3}" ]]; then
+                                                                if [[ -f "${jw3}" ]]; then
 						                        # wordlist default yang digunakan oleh wush-ng
-                                                                        wordlist2="${jw2}"
+                                                                        wordlist3="${jw3}"
 	                                                                echo ""
-                                                                        echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}."
+                                                                        echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake ${jfh2}."
                                                                         sleep 3
-                                                                        aircrack-ng -w "${wordlist2}" "${ffh}${fh}"
+                                                                        aircrack-ng -w "${wordlist3}" "${jfh2}"
 	                                                                break 
 	                                                        else
-						                        echo "[-] File wordlist ${jw2} tidak ditemukan."
+						                        echo "[-] File wordlist ${jw3} tidak ditemukan."
 		                                                fi
 				                        else
                                                                 echo "[-] Jalur file wordlist tidak boleh kosong."
@@ -249,21 +291,17 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
 	                                        done
 				                break
 		                        else
-			                        echo "[-] File handshake ${jfh} tidak benar. Harap masukkan file Handshake yang benar (.cap)."
+			                        echo "[-] File handshake ${jfh2} tidak benar. Harap masukkan file Handshake yang benar (.cap)."
 			                fi
 	                        else
-	                                echo "[-] File handshake ${jfh} tidak ditemukan."
+	                                        echo "[-] File handshake ${jfh2} tidak ditemukan."
 				fi
 			      
 	                else
 			        echo "[-] Jalur file Handshake tidak boleh kosong."
 		        fi
                 done
-                break
-        else
-                    echo [-] "Masukan tidak valid. Harap masukkan Y atau N."
-        fi
-        done
+	fi
 }
 
 function tentang_dukung_saya(){
