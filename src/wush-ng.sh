@@ -253,7 +253,7 @@ function wush-ng(){
         while true; do
                 clear
                 echo "************** Menu utama wush-ng **************"
-		echo "Antarmuka jaringan yang dipilih: ${aj}. Mode: ${cek_mode}"
+		echo "Antarmuka jaringan yang dipilih: ${aj}. Mode: ${mode}"
                 echo ""
                 echo "Pilih opsi dari menu:"
 		echo "--------------"
