@@ -47,7 +47,7 @@ while True:
 
     # Memeriksa apakah pengguna ingin melanjutkan
     if pilihan.lower() == 'y':
-        print "[*] Menjalankan wush-ng"
+        print("[*] Menjalankan wush-ng")
         time.sleep(3)
         os.system("bash /usr/share/wush-ng/src/wush-ng.sh")
         break
