@@ -197,7 +197,7 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
                 echo ""
                 echo "Anda telah memilih file Handshake selama sesi ini (${ffh}${fh})."
                 echo ""
-                read -p "Apakah Anda ingin menggunakan file pengambilan yang sudah dipilih ini (Y/n): " kamu_nanya
+                read -p "Apakah Anda ingin menggunakan file Handshake yang sudah dipilih ini (Y/n): " kamu_nanya
                 if [[ "${kamu_nanya}" == "y" || "${kamu_nanya}" == "Y" ]]; then
                         while true; do
                                 echo ""
@@ -213,7 +213,7 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
 							        # wordlist default . digunakan oleh wush-ng
                                                                 wordlist="${wb}"
 	                                                        echo ""
-                                                                echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}." kamu_nanya
+                                                                echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${ffh}${fh}."
                                                                 sleep 3
                                                                 aircrack-ng -w "${wordlist}" "${ffh}${fh}"
 	                                                        break 
