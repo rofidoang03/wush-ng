@@ -28,7 +28,7 @@
 ############################################################################
 
 if [[ "$EUID" -ne 0 ]]; then
-	echo "Error: Program ini harus dijalankan sebagai root."
+	echo "[-]  Program ini harus dijalankan sebagai root."
 	exit 1
 fi
 
@@ -48,14 +48,14 @@ echo ""
 
 while true; do
 	# input memilih antar muka jaringan
-        read -p "> " imaj
+        read -p "[»] " imaj
 
         if [[ "${imaj}" =~ ^[0-9]+$ ]] && (( imaj >= 0 && imaj < ${#ajyt[@]} )); then
  		# antarmuka jaringan
             	aj="${ajyt[$imaj]}"
             	break
         else
-            	echo "Error: Antarmuka jaringan ${imaj} tidak ditemukan. Silahkan pilih lagi."
+            	echo "[-] Antarmuka jaringan ${imaj} tidak ditemukan. Silahkan pilih lagi."
         	fi
 done
 
@@ -73,12 +73,12 @@ echo ""
 while true; do
 	read -p "Silahkan masukkan alamat MAC Access Point (BSSID): " b
 	if [[ -z "${b}" ]] || [[ ! "${b}" =~ ^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$ ]]; then
-    		echo "Error: Alamat MAC Access Point (BSSID) tidak benar. Harap masukkan alamat MAC Access Point (BSSID) yang benar (contoh: XX:XX:XX:XX:XX:XX)."
+    		echo "[-] Alamat MAC Access Point (BSSID) tidak benar. Harap masukkan alamat MAC Access Point (BSSID) yang benar (contoh: XX:XX:XX:XX:XX:XX)."
 	else
 		while true; do
 			read -p "Silahkan masukkan nomor channel yang digunakan oleh Access Point: " c
 			if [[ -z "${c}" ]] || ! [[ "${c}" =~ ^[0-9]+$ ]]; then
-				echo "Error: Nomor channel tidak benar. Harap masukkan nomor channel yang benar."
+				echo "[-] Nomor channel tidak benar. Harap masukkan nomor channel yang benar."
 			else
 				# posisi airodump-ng
 				pa="80x24+0+0"
@@ -115,7 +115,7 @@ done
 # file handshake yang akan digunakan untuk memecahkan kata sandi jaringan WPA2.'
 fh="${nufh}-01.cap"
 # wordlist default yang digunakan oleh wush-ng
-wordlist="/usr/share/wordlists/rockyou.txt"
+wordlist="/usr/share/wush-ng/wordlists/rockyou.txt"
 echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake ${fh}..."
 sleep 3
 aircrack-ng -w "${wordlist}" "${fh}"
