@@ -179,7 +179,7 @@ function menu_alat_handshake(){
                                 ;;
 	        
                 esac
-        do
+        done
         
 }
 
