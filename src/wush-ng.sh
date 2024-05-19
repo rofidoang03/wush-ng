@@ -87,6 +87,7 @@ function memindai_jaringan_wifi(){
 }
 
 function menu_alat_handshake(){
+        memindai_jaringan_wifi
         while true; do
 	read -p "Silahkan masukkan alamat MAC Access Point (BSSID): " b
 	if [[ -z "${b}" ]] || [[ ! "${b}" =~ ^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$ ]]; then
