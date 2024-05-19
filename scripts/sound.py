@@ -3,7 +3,23 @@ import simpleaudio as sa
 import os
 
 text="""
+PERINGATAN
 
+Penyalahgunaan atau penggunaan program ini untuk
+aktivitas ilegal dilarang keras. Program ini
+disediakan semata-mata untuk tujuan pembelajaran dan
+pengujian keamanan jaringan yang sah. Pengguna
+bertanggung jawab penuh atas penggunaan dan
+konsekuensi yang timbul dari penggunaan program ini.
+
+DILARANG KERAS menggunakan program ini tanpa izin
+atau untuk tujuan merusak atau melanggar hukum.
+Segala tindakan ilegal diluar tanggung jawab
+pembuat program.
+
+DENGAN MENGGUNAKAN PROGRAM INI, ANDA MENYATAKAN
+BAHWA ANDA MEMAHAMI DAN MENERIMA SYARAT DAN KETENTUAN
+DIATAS.
 """
 
 lang="id"
