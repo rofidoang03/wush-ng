@@ -27,4 +27,343 @@
 #
 ############################################################################
 
-python3 /usr/share/wush-ng/scripts/sound.py
+function cek_root(){
+        if [[ "$EUID" -ne 0 ]]; then
+                echo "[-]  Program ini harus dijalankan sebagai root."
+                exit 1
+        fi
+}
+
+function tekan_enter(){
+        echo ""
+        read -p "Tekan [Enter] untuk melanjutkan..."
+}
+
+function pemilihan_antarmuka_jaringan(){
+        clear
+        echo ""
+        echo "************** Pemilihan antarmuka jaringan **************"
+        echo ""
+        echo "Pilih antarmuka jaringan untuk digunakan:"
+        echo "--------------"
+
+        # antarmuka jaringan yang tersedia
+        antarmuka_jaringan_yang_tersedia=($(iw dev | awk '/Interface/{print $2}'))
+        for ((i=0; i<"${#antarmuka_jaringan_yang_tersedia[@]}"; i++)); do
+                echo "${i}. ${antarmuka_jaringan_yang_tersedia[$i]}"
+        done
+        echo "--------------"
+
+        while true; do
+                # input memilih antar muka jaringan
+                read -p "[»] " memlih_antarmuka_jaringan
+
+                if [[ "${memlih_antarmuka_jaringan}" =~ ^[0-9]+$ ]] && (( memlih_antarmuka_jaringan >= 0 && memlih_antarmuka_jaringan < ${#antarmuka_jaringan_yang_tersedia[@]} )); then
+                        # antarmuka jaringan
+                        antarmuka_jaringan="${antarmuka_jaringan_yang_tersedia[$memlih_antarmuka_jaringan]}"
+                        break
+                else
+                        echo "[-] Antarmuka jaringan ${memlih_antarmuka_jaringan} tidak ditemukan. Silahkan pilih lagi."
+                fi
+        done
+}
+
+function mengaktifkan_mode_monitor(){
+        echo ""
+        echo "[*] Mengaktifkan mode monitor pada antarmuka jaringan ${antarmuka_jaringan} menggunakan airmon-ng..."
+        sleep 3
+        airmon-ng check kill
+        airmon-ng start "${antarmuka_jaringan}"
+}
+
+function menonaktifkan_mode_monitor(){
+        echo ""
+        echo "[*] Menonaktifkan mode monitor pada antarmuka jaringan ${antarmuka_jaringan} menggunakan airmon-ng..."
+        sleep 3
+        airmon-ng sleep "${antarmuka_jaringan}"
+        systemctl restart NetworkManager
+}
+
+function memindai_jaringan_wifi(){
+        echo ""
+        echo "[*] Memindai jaringan Wi-Fi menggunakan airodump-ng pada antarmuka jaringan ${antarmuka_jaringan}..."
+        sleep 3
+        airodump-ng "${antarmuka_jaringan}"
+        echo ""
+}
+
+function jelajahi_target(){
+        memindai_jaringan_wifi
+        while true; do
+                read -p "Silahkan masukkan alamat MAC Access Point (BSSID): " bssid
+                if [[ -z "${bssid}" ]] || [[ ! "${bssid}" =~ ^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$ ]]; then
+                        echo "[-] Alamat MAC Access Point (BSSID) tidak benar. Harap masukkan alamat MAC Access Point (BSSID) yang benar (contoh: XX:XX:XX:XX:XX:XX)."
+                else
+                        while true; do
+                                read -p "Silahkan masukkan nomor channel yang digunakan oleh Access Point: " channel
+                                if [[ -z "${channel}" ]] || ! [[ "${channel}" =~ ^[0-9]+$ ]]; then
+                                        echo "[-] Nomor channel tidak benar. Harap masukkan nomor channel yang benar."
+                                else
+                                        break
+                                fi
+                        done
+                        break
+                fi
+        done
+}
+
+function tangkap_handshake(){
+
+        target_bssid="${bssid}"
+
+        if [[ -z "${target_bssid}" ]] || [[ ! "${target_bssid}" =~ ^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$ ]]; then
+                jelajahi_target
+        fi
+
+        # posisi geometry xterm airodump-ng
+        geometry_airodump="80x24+0+0"
+        # posisi geometry xterm aireplay-ng
+        geometry_aireplay="80x24-0+0"
+
+        # timeout airodump-ng
+        timeout_airodump=28
+        waktu_saat_ini=$(date +"%Y-%m-%d_%H:%M:%S")
+        # nama untuk file handshake
+        nama_untuk_file_handshake="${bssid}_${waktu_saat_ini}"
+        echo ""
+        echo "[*] Menangkap Handshake menggunakan airodump-ng pada antarmuka jaringan ${antarmuka_jaringan}..."
+        sleep 3
+        xterm -geometry "${geometry_airodump}" -e "timeout ${timeout_airodump} airodump-ng --bssid ${bssid} --channel ${channel} --write ${nama_untuk_file_handshake} ${antarmuka_jaringan}" &
+        airodump_pid=$!
+        sleep 5
+        # timeout aireplay-ng
+        timeout_aireplay=20
+        echo "[*] Mengirimkan paket deauthentikasi menggunakan aireplay-ng pada antarmuka jaringan ${antarmuka_jaringan}..."
+        sleep 3
+        xterm -geometry "${geometry_aireplay}" -e "timeout ${timeout_aireplay} aireplay-ng --deauth 0 -a ${bssid} ${antarmuka_jaringan}" &
+        aireplay_pid=$!
+        # menunggu proses airodump-ng dan aireplay-ng
+        wait "${airodump_pid}"
+        wait "${aireplay_pid}"
+        # file handshake yang akan digunakan untuk memecahkan kata sandi jaringan WPA2.'
+        file_handshake_airodump="${nama_untuk_file_handshake}-01.cap"
+        # folder untuk menyimpan file handshake
+        folder_file_handshake="/usr/share/wush-ng/file_handshake/"
+        # menghapus semua file csv dan xml
+        rm *csv *xml
+        mv "${file_handshake_airodump}" "${folder_file_handshake}"
+        echo "[+] File Handshake tersimpan di: ${folder_file_handshake}${file_handshake_airodump}."
+        sleep 3
+}
+
+function menu_alat_handshake(){
+        while true; do
+                clear
+                echo "************** Menu alat Handshake **************"
+                echo ""
+                echo "Pilih opsi dari menu:"
+                echo "--------------"
+                echo "1. Pilih antarmuka jaringan yang lain"
+                echo "2. Aktifkan mode monitor"
+                echo "3. Nonaktifkan mode monitor"
+                echo "--------------"
+                echo "4. Jelajahi target"
+                echo "5. Tangkap Handshake"
+                echo "--------------"
+                echo "6. Kembali ke menu utama"
+                echo "--------------"
+                read -p "[»] " mah
+                case "${mah}" in
+                        1)
+                                pemilihan_antarmuka_jaringan
+                                tekan_enter
+                                ;;
+                        2)
+                                mengaktifkan_mode_monitor
+                                tekan_enter
+                                ;;
+                        3)
+                                menonaktifkan_mode_monitor
+                                tekan_enter
+                                ;;
+                        4)
+                                jelajahi_target
+                                tekan_enter
+                                ;;
+                        5)
+                                tangkap_handshake
+                                tekan_enter
+                                ;;
+                        6)
+                                wush-ng
+                                ;;
+                        *)
+                                echo "Error"
+                                tekan_enter
+                                ;;
+                esac
+        done
+        
+}
+
+function masukkan_jalur_file_handshake(){
+        while true; do
+                echo ""
+                read -p "Silahkan masukkan jalur file Handshake: " jalur_file_handshake
+                if [[ ! -z "${jalur_file_handshake}" ]]; then
+                        if [[ -f "${jalur_file_handsahake}" ]]; then
+                                if [[ "${jalur_file_handsake##*.}" == "cap" ]]; then
+                                        break
+                                else
+                                        echo "[-] File handshake ${jalur_file_handsake} tidak benar. Harap masukkan file Handshake yang benar (.cap)."
+                                fi
+                        else
+                                echo "[-] File handshake ${jalur_file_handsake} tidak ditemukan."
+                        fi
+                else
+                                echo "[-] Jalur file Handshake tidak boleh kosong."
+                fi
+        done
+}
+
+function masukkan_jalur_file_wordlist(){
+        while true; do
+                echo ""
+                read -p "Silahkan masukkan jalur file wordlist: " jalur_file_wordlist
+                if [[ ! -z "${jalur_file_wordlist}" ]]; then
+                        if [[ -f "${jalur_file_wordlist}" ]]; then
+                                # wordlist default yang digunakan oleh wush-ng
+                                wordlist="${jalur_file_wordlist}"
+                                echo ""
+                                echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${folder_file_handshake}${file_handshake_airodump}."
+                                sleep 3
+                                aircrack-ng -w "${wordlist}" "${folder_file_handshake}${file_handshake_airodump}"
+                                break
+                        else
+                                echo "[-] File wordlist ${jalur_file_wordlist} tidak ditemukan."
+                        fi
+                else
+                        echo "[-] Jalur file wordlist tidak boleh kosong."
+                fi
+        done
+}
+
+function mendeskripsi_kata_sandi_jaringan_wpa2(){
+        target_file_handshake="${folder_file_handshake}${file_handshake_airodump}"
+        if [[ -f "${target_file_handshake}" ]]; then
+                while true; do
+                        echo ""
+                        echo "Anda telah memilih file Handshake selama sesi ini (${target_file_handshake})."
+                        echo "" ""
+                        read -p "Apakah Anda ingin menggunakan file Handshake yang sudah dipilih ini (Y/n): " kamu_nanya
+                        if [[ "${kamu_nanya}" == "y" || "${kamu_nanya}" == "Y" ]]; then
+                                masukkan_jalur_file_wordlist
+                                break
+                elif [[ "${kamu_nanya}" == "n" || "${kamu_nanya}" == "N" ]]; then
+                                masukkan_jalur_file_handshake
+                        break
+                else
+                        echo [-] "Masukan tidak valid. Harap masukkan Y atau N."
+                fi
+                done
+        else
+                jalur_file_handsake
+        fi
+}
+
+function tentang_dukung_saya(){
+        tentang="wush-ng adalah sebuah program Bash sederhana yang dibuat untuk melakukan audit keamanan jaringan Wi-Fi."
+        url="https://github.com/rofidoang03/wush-ng"
+        while true;
+        do
+                clear
+                echo "************** Tentang dan dukung Saya **************"
+                echo ""
+                echo "Pilih opsi dari menu:"
+                echo "--------------"
+                echo "1. Tentang"
+                echo "2. Dukung Saya"
+                echo "--------------"
+                echo "3. Kembali ke menu utama"
+                echo "--------------"
+                read -p "[»] " tdds
+                case "${tdds}" in
+                        1)
+                                echo ""
+                                echo "${tentang}"
+                                tekan_enter
+                                ;;
+                        2)
+                                dukung_saya=$(xdg-open "${url}")
+                                tekan_enter
+                                ;;
+                        3)
+                                wush-ng
+                                ;;
+                        *)
+                                echo "Error"
+                                tekan_enter
+                                ;;
+                esac
+                         
+        done
+}
+
+function wush-ng(){
+        while true; do
+                clear
+                echo "************** Menu utama wush-ng **************"
+                echo ""
+                echo "Pilih opsi dari menu:"
+                echo "--------------"
+                echo "1. Pilih antarmuka jaringan yang lain"
+                echo "2. Aktifkan mode monitor"
+                echo "3. Nonaktifkan mode monitor"
+                echo "--------------"
+                echo "4. Menu alat handshake"
+                echo "5. Deskripsi kata sandi jaringan WPA2"
+                echo "--------------"
+                echo "6. Tentang dan Dukung Saya"
+                echo "7. Keluar"
+                echo "--------------"
+                read -p "[»] " main
+                case "${main}" in
+                        1)
+                                pemilihan_antarmuka_jaringan
+                                ;;
+                        2)
+                                mengaktifkan_mode_monitor
+                                tekan_enter
+                                ;;
+                        3)
+                                menonaktifkan_mode_monitor
+                                tekan_enter
+                                ;;
+                        4)
+                                menu_alat_handshake
+                                # tekan_enter
+                                ;;
+                        5)
+                                mendeskripsi_kata_sandi_jaringan_wpa2
+                                tekan_enter
+                                ;;
+                        6) 
+                                tentang_dukung_saya
+                                ;;
+                        7)
+                                exit 0
+                                ;;
+                        *)
+                                echo "Masih dalam tahap pengembangan 😁"
+                                ;;
+                   esac
+                                              
+        done
+}
+
+function wush(){
+        pemilihan_antarmuka_jaringan
+        wush-ng
+}
+
+wush
