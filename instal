@@ -1,1 +1,0 @@
-apt-get update -y ; apt-get install git -y ; cd /usr/share ; git clone https://github.com/rofidoang03/wush-ng ; cd wush-ng ; chmod +x instal.sh ; ./instal.sh
