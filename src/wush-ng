@@ -27,6 +27,10 @@
 #
 ############################################################################
 
+# var warna
+m="\e[1;31m"
+r"\e[0m"
+
 function cek_root(){
         if [[ "$EUID" -ne 0 ]]; then
                 echo "[-]  Program ini harus dijalankan sebagai root."
@@ -310,27 +314,28 @@ function tentang_dukung_saya(){
 }
 
 function peringatan(){
-        echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-        echo "@                                                       @"
-        echo "@ PERINGATAN                                            @"
-        echo "@                                                       @"
-        echo "@ Penyalahgunaan atau penggunaan program ini untuk      @"
-        echo "@ aktivitas ilegal dilarang keras. Program ini          @"
-        echo "@ disediakan semata-mata untuk tujuan pembelajaran dan  @"
-        echo "@ pengujian keamanan jaringan yang sah. Pengguna        @"
-        echo "@ bertanggung jawab penuh atas penggunaan dan           @"
-        echo "@ konsekuensi yang timbul dari penggunaan program ini.  @"
-        echo "@                                                       @"
-        echo "@ DILARANG KERAS menggunakan program ini tanpa izin     @"
-        echo "@ atau untuk tujuan merusak atau melanggar hukum.       @"
-        echo "@ Segala tindakan ilegal diluar tanggung jawab          @"
-        echo "@ pembuat program.                                      @"
-        echo "@                                                       @"
-        echo "@ DENGAN MENGGUNAKAN PROGRAM INI, ANDA MENYATAKAN       @"
-        echo "@bBAHWA ANDA MEMAHAMI DAN MENERIMA SYARAT DAN KETENTUAN @"
-        echo "@ DIATAS.                                               @"
-        echo "@                                                       @"
-        echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+        clear
+        echo -e "${m}@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@${r}"
+        echo -e "${m}@                                                       @${r}"
+        echo -e "t@ PERINGATAN                                               @${r}"
+        echo -e "${m}@                                                       @${r}"
+        echo -e "${m}@ Penyalahgunaan atau penggunaan program ini untuk      @${r}"
+        echo -e "${m}@ aktivitas ilegal dilarang keras. Program ini          @${r}"
+        echo -e "${m}@ disediakan semata-mata untuk tujuan pembelajaran dan  @${r}"
+        echo -e "${m}@ pengujian keamanan jaringan yang sah. Pengguna        @${r}"
+        echo -e "${m}@ bertanggung jawab penuh atas penggunaan dan           @${r}"
+        echo -e "${m}@ konsekuensi yang timbul dari penggunaan program ini.  @${r}"
+        echo -e "${m}@                                                       @${r}"
+        echo -e "${m}@ DILARANG KERAS menggunakan program ini tanpa izin     @${r}"
+        echo -e "${m}@ atau untuk tujuan merusak atau melanggar hukum.       @${r}"
+        echo -e "${m}@ Segala tindakan ilegal diluar tanggung jawab          @${r}"
+        echo -e "${m}@ pembuat program.                                      @${r}"
+        echo -e "${m}@                                                       @${r}"
+        echo -e "${m}@ DENGAN MENGGUNAKAN PROGRAM INI, ANDA MENYATAKAN       @${r}"
+        echo -e "${m}@bBAHWA ANDA MEMAHAMI DAN MENERIMA SYARAT DAN KETENTUAN @${r}"
+        echo -e "${m}@ DIATAS.                                               @${r}"
+        echo -e "${m}@                                                       @${r}"
+        echo -e "${m}@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@${r}"
 }
 
 function wush-ng(){
