@@ -29,7 +29,7 @@
 
 # var warna
 m="\e[1;31m"
-r"\e[0m"
+r="\e[0m"
 
 function cek_root(){
         if [[ "$EUID" -ne 0 ]]; then
@@ -317,7 +317,7 @@ function peringatan(){
         clear
         echo -e "${m}@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@${r}"
         echo -e "${m}@                                                       @${r}"
-        echo -e "t@ PERINGATAN                                               @${r}"
+        echo -e "${m}@ PERINGATAN                                            @${r}"
         echo -e "${m}@                                                       @${r}"
         echo -e "${m}@ Penyalahgunaan atau penggunaan program ini untuk      @${r}"
         echo -e "${m}@ aktivitas ilegal dilarang keras. Program ini          @${r}"
@@ -332,7 +332,7 @@ function peringatan(){
         echo -e "${m}@ pembuat program.                                      @${r}"
         echo -e "${m}@                                                       @${r}"
         echo -e "${m}@ DENGAN MENGGUNAKAN PROGRAM INI, ANDA MENYATAKAN       @${r}"
-        echo -e "${m}@bBAHWA ANDA MEMAHAMI DAN MENERIMA SYARAT DAN KETENTUAN @${r}"
+        echo -e "${m}@ BAHWA ANDA MEMAHAMI DAN MENERIMA SYARAT DAN KETENTUAN @${r}"
         echo -e "${m}@ DIATAS.                                               @${r}"
         echo -e "${m}@                                                       @${r}"
         echo -e "${m}@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@${r}"
