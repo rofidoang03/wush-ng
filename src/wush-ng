@@ -30,6 +30,7 @@
 # var warna
 m="\e[1;31m"
 r="\e[0m"
+# h="\e[1;32m"
 
 function cek_root(){
         if [[ "$EUID" -ne 0 ]]; then
@@ -40,7 +41,7 @@ function cek_root(){
 
 function tekan_enter(){
         echo ""
-        read -p "Tekan [Enter] untuk melanjutkan..."
+        read -p $'\e[1;32mTekan [Enter] untuk melanjutkan...\e[0m'
 }
 
 function pemilihan_antarmuka_jaringan(){
