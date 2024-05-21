@@ -33,6 +33,7 @@ r="\e[0m"      # reset
 b="\e[1;34m"   # biru
 h="\e[1;32m"   # hijau
 p="\e[1;37m"   # putih
+k="\e[1;33m"   # kuning
 
 function cek_root(){
         if [[ "$EUID" -ne 0 ]]; then
@@ -46,21 +47,31 @@ function tekan_enter(){
         read -p $'\e[1;32mTekan [Enter] untuk melanjutkan...\e[0m'
 }
 
+function waktu_saat_ini(){
+        waktu=$(date +"%Y-%m-%d_%H:%M:%S")
+        echo -e "[ ${waktu} ]"
+}
+
 function pemilihan_antarmuka_jaringan(){
+        w1=$(waktu_saat_ini)
         clear
         echo ""
-        echo "************** Pemilihan antarmuka jaringan **************"
+        echo -e "${b}${w1}${r}"
         echo ""
-        echo "Pilih antarmuka jaringan untuk digunakan:"
-        echo "--------------"
+        echo -e "${b}******************** Pemilihan Antarmuka Jaringan ********************"
+        echo "======================================================================"
+        echo ""
 
         # antarmuka jaringan yang tersedia
         antarmuka_jaringan_yang_tersedia=($(iw dev | awk '/Interface/{print $2}'))
         for ((i=0; i<"${#antarmuka_jaringan_yang_tersedia[@]}"; i++)); do
-                echo "${i}. ${antarmuka_jaringan_yang_tersedia[$i]}"
+                echo "                [${i}] ${antarmuka_jaringan_yang_tersedia[$i]}"
         done
-        echo "--------------"
-
+        echo ""
+        echo "======================================================================"
+        echo ""
+        echo "             [ ] Pilih Opsi Atau CTRL+C untuk Membatalkan"
+        echo -e "${r}"
         while true; do
                 # input memilih antar muka jaringan
                 read -p "[»] " memlih_antarmuka_jaringan
@@ -131,12 +142,12 @@ function tangkap_handshake(){
         geometry_airodump="80x24+0+0"
         # posisi geometry xterm aireplay-ng
         geometry_aireplay="80x24-0+0"
-
         # timeout airodump-ng
         timeout_airodump=28
-        waktu_saat_ini=$(date +"%Y-%m-%d_%H:%M:%S")
+        # waktu saat ini
+        wsi=$(date +"%Y-%m-%d_%H:%M:%S")
         # nama untuk file handshake
-        nama_untuk_file_handshake="${bssid}_${waktu_saat_ini}"
+        nama_untuk_file_handshake="${bssid}_${wsi}"
         echo ""
         echo -e "${b}[*] ${p}Menangkap Handshake menggunakan airodump-ng pada antarmuka jaringan ${antarmuka_jaringan}...${r}"
         sleep 3
@@ -165,20 +176,25 @@ function tangkap_handshake(){
 
 function menu_alat_handshake(){
         while true; do
+                w4=$(waktu_saat_ini)
                 clear
-                echo "************** Menu alat Handshake **************"
+                echo -e "${b}"
+                echo "${w4}"
                 echo ""
-                echo "Pilih opsi dari menu:"
-                echo "--------------"
-                echo "1. Pilih antarmuka jaringan yang lain"
-                echo "2. Aktifkan mode monitor"
-                echo "3. Nonaktifkan mode monitor"
-                echo "--------------"
-                echo "4. Jelajahi target"
-                echo "5. Tangkap Handshake"
-                echo "--------------"
-                echo "6. Kembali ke menu utama"
-                echo "--------------"
+                echo "************************* Menu alat Handshake ************************"
+                echo "======================================================================"
+                echo "                                                                      "
+                echo "                [1] Pilih antarmuka jaringan yang lain                "
+                echo "                [2] Aktifkan mode monitor                             "
+                echo "                [3] Nonaktifkan mode monitor                          "
+                echo "                [4] Jelajahi target                                   "
+                echo "                [5] Tangkap Handshake                                 "
+                echo "                [6] Kembali ke menu utama                             "
+                echo "                                                                      "
+                echo "======================================================================"
+                echo ""
+                echo "             [ ] Pilih Opsi atau CTRL+C untuk Membatalkan             "
+                echo -e "${r}"
                 read -p "[»] " mah
                 case "${mah}" in
                         1)
@@ -281,18 +297,23 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
 function tentang_dukung_saya(){
         tentang="wush-ng adalah sebuah program Bash sederhana yang dibuat untuk melakukan audit keamanan jaringan Wi-Fi."
         url="https://github.com/rofidoang03/wush-ng"
-        while true;
-        do
+        while true; do
+                w5=$(waktu_saat_ini)
                 clear
-                echo "************** Tentang dan dukung Saya **************"
+                echo -e "${b}"
+                echo "${w5}"
                 echo ""
-                echo "Pilih opsi dari menu:"
-                echo "--------------"
-                echo "1. Tentang"
-                echo "2. Dukung Saya"
-                echo "--------------"
-                echo "3. Kembali ke menu utama"
-                echo "--------------"
+                echo "*********************** Tentang dan dukung Saya **********************"
+                echo "======================================================================"
+                echo "                                                                      "
+                echo "                       [1] Tentang                                    "
+                echo "                       [2] Dukung Saya                                "
+                echo "                       [3] Kembali ke menu utama                      "
+                echo "                                                                      "
+                echo "======================================================================"
+                echo ""
+                echo "             [ ] Pilih Opsi Atau CTRL+C untuk Membatalkan             "
+                echo -e "${r}"
                 read -p "[»] " tdds
                 case "${tdds}" in
                         1)
@@ -317,47 +338,56 @@ function tentang_dukung_saya(){
 }
 
 function peringatan(){
+        w2=$(waktu_saat_ini)
         clear
-        echo -e "${m}@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@${r}"
-        echo -e "${m}@                                                       @${r}"
-        echo -e "${m}@ PERINGATAN                                            @${r}"
-        echo -e "${m}@                                                       @${r}"
-        echo -e "${m}@ Penyalahgunaan atau penggunaan program ini untuk      @${r}"
-        echo -e "${m}@ aktivitas ilegal dilarang keras. Program ini          @${r}"
-        echo -e "${m}@ disediakan semata-mata untuk tujuan pembelajaran dan  @${r}"
-        echo -e "${m}@ pengujian keamanan jaringan yang sah. Pengguna        @${r}"
-        echo -e "${m}@ bertanggung jawab penuh atas penggunaan dan           @${r}"
-        echo -e "${m}@ konsekuensi yang timbul dari penggunaan program ini.  @${r}"
-        echo -e "${m}@                                                       @${r}"
-        echo -e "${m}@ DILARANG KERAS menggunakan program ini tanpa izin     @${r}"
-        echo -e "${m}@ atau untuk tujuan merusak atau melanggar hukum.       @${r}"
-        echo -e "${m}@ Segala tindakan ilegal diluar tanggung jawab          @${r}"
-        echo -e "${m}@ pembuat program.                                      @${r}"
-        echo -e "${m}@                                                       @${r}"
-        echo -e "${m}@ DENGAN MENGGUNAKAN PROGRAM INI, ANDA MENYATAKAN       @${r}"
-        echo -e "${m}@ BAHWA ANDA MEMAHAMI DAN MENERIMA SYARAT DAN KETENTUAN @${r}"
-        echo -e "${m}@ DIATAS.                                               @${r}"
-        echo -e "${m}@                                                       @${r}"
-        echo -e "${m}@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@${r}"
+        echo ""
+        echo -e "${m}======================================================================"
+        echo -e "                                                                      "
+        echo -e "                              PERINGATAN                              "
+        echo -e "                                                                      "
+        echo -e "           Penyalahgunaan atau penggunaan program ini untuk           "
+        echo -e "             aktivitas ilegal dilarang keras. Program ini             "
+        echo -e "         disediakan semata-mata untuk tujuan pembelajaran dan         "
+        echo -e "            pengujian keamanan jaringan yang sah. Pengguna            "
+        echo -e "             bertanggung jawab penuh atas penggunaan dan              "
+        echo -e "         konsekuensi yang timbul dari penggunaan program ini.         "
+        echo -e "                                                                      "
+        echo -e "           ILARANG KERAS menggunakan program ini tanpa izin           "
+        echo -e "           atau untuk tujuan merusak atau melanggar hukum.            "
+        echo -e "             Segala tindakan ilegal diluar tanggung jawab             "
+        echo -e "                           pembuat program.                           "
+        echo -e "                                                                      "
+        echo -e "            DENGAN MENGGUNAKAN PROGRAM INI, ANDA MENYATAKAN           "
+        echo -e "        BAHWA ANDA MEMAHAMI DAN MENERIMA SYARAT DAN KETENTUAN         "
+        echo -e "                                DIATAS.                               "
+        echo -e "                                                                      "
+        echo -e "                               ${k}[ ROFI ]${m}                       "
+        echo -e "                                                                      "
+        echo -e "======================================================================${r}"
 }
 
 function wush-ng(){
         while true; do
+                w3=$(waktu_saat_ini)
                 clear
-                echo "************** Menu utama wush-ng **************"
+                echo -e "${b}"
+                echo "${w3}"
                 echo ""
-                echo "Pilih opsi dari menu:"
-                echo "--------------"
-                echo "1. Pilih antarmuka jaringan yang lain"
-                echo "2. Aktifkan mode monitor"
-                echo "3. Nonaktifkan mode monitor"
-                echo "--------------"
-                echo "4. Menu alat handshake"
-                echo "5. Deskripsi kata sandi jaringan WPA2"
-                echo "--------------"
-                echo "6. Tentang dan Dukung Saya"
-                echo "7. Keluar"
-                echo "--------------"
+                echo "********************** Menu Utama Wi-Fi Hacking **********************"
+                echo "======================================================================"
+                echo ""
+                echo "                [1] Pilih antarmuka jaringan yang lain                "
+                echo "                [2] Aktifkan mode monitor"
+                echo "                [3] Nonaktifkan mode monitor"
+                echo "                [4] Menu alat handshake"
+                echo "                [5] Deskripsi kata sandi jaringan WPA2"
+                echo "                [6] Tentang dan Dukung Saya"
+                echo "                [7] Keluar"
+                echo ""
+                echo "======================================================================"
+                echo ""
+                echo "                [ ] Pilih Opsi atau CTRL+C untuk Membatalkan"
+                echo -e "${r}"
                 read -p "[»] " main
                 case "${main}" in
                         1)
