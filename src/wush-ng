@@ -309,6 +309,30 @@ function tentang_dukung_saya(){
         done
 }
 
+function peringatan(){
+        echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+        echo "@                                                       @"
+        echo "@ PERINGATAN                                            @"
+        echo "@                                                       @"
+        echo "@ Penyalahgunaan atau penggunaan program ini untuk      @"
+        echo "@ aktivitas ilegal dilarang keras. Program ini          @"
+        echo "@ disediakan semata-mata untuk tujuan pembelajaran dan  @"
+        echo "@ pengujian keamanan jaringan yang sah. Pengguna        @"
+        echo "@ bertanggung jawab penuh atas penggunaan dan           @"
+        echo "@ konsekuensi yang timbul dari penggunaan program ini.  @"
+        echo "@                                                       @"
+        echo "@ DILARANG KERAS menggunakan program ini tanpa izin     @"
+        echo "@ atau untuk tujuan merusak atau melanggar hukum.       @"
+        echo "@ Segala tindakan ilegal diluar tanggung jawab          @"
+        echo "@ pembuat program.                                      @"
+        echo "@                                                       @"
+        echo "@ DENGAN MENGGUNAKAN PROGRAM INI, ANDA MENYATAKAN       @"
+        echo "@bBAHWA ANDA MEMAHAMI DAN MENERIMA SYARAT DAN KETENTUAN @"
+        echo "@ DIATAS.                                               @"
+        echo "@                                                       @"
+        echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+}
+
 function wush-ng(){
         while true; do
                 clear
@@ -363,6 +387,8 @@ function wush-ng(){
 
 function wush(){
         pemilihan_antarmuka_jaringan
+        peringatan
+        tekan_enter
         wush-ng
 }
 
