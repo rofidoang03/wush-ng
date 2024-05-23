@@ -4,42 +4,36 @@
 csv_file="airodump-output.csv"
 interface="wlan0mon"  # Ganti dengan nama interface yang sesuai
 
-# Memastikan interface dalam mode monitor
-echo "Mengatur interface $interface ke mode monitor..."
-airmon-ng start $interface
-
 # Melakukan pemindaian menggunakan airodump-ng
 echo "Melakukan pemindaian dengan airodump-ng..."
-airodump-ng --output-format csv --write $csv_file $interface
+airodump-ng --output-format csv --write $csv_file $interface &
 
-# Memastikan file CSV ada
-if [[ ! -f "${csv_file}-01.csv" ]]; then
-    echo "File ${csv_file}-01.csv tidak ditemukan!"
-    exit 1
-fi
+# Menunggu 5 detik untuk memastikan hasil pemindaian tersedia
+sleep 5
 
-# Menampilkan BSSID dan client yang terhubung
-echo "BSSID dan client yang terhubung:"
+# Memeriksa apakah ada client yang terhubung
+client_count=$(awk '/Station MAC/{f=1;next}f' "${csv_file}-01.csv" | grep -v "not associated" | wc -l)
 
-# Membaca file CSV dan memproses data
-awk -F',' '
-BEGIN {
-    OFS="\t"
-    print "BSSID", "Client"
-}
-/Station MAC/ { 
-    station_section = 1
-    next
-}
-station_section == 1 && NF > 0 {
-    client_mac = $1
-    bssid = $6
-    if (bssid != "(not associated)") {
-        print bssid, client_mac
+if [ $client_count -eq 0 ]; then
+    echo "Tidak ada client yang terhubung."
+else
+    # Menampilkan informasi BSSID, Channel, dan ESSID
+    echo "BSSID, Channel, ESSID:"
+
+    # Membaca file CSV dan memproses data
+    awk -F',' '
+    BEGIN {
+        OFS="\t"
+        print "BSSID", "Channel", "ESSID"
     }
-}
-' "${csv_file}-01.csv"
-
-# Mengembalikan interface ke mode managed
-echo "Mengembalikan interface $interface ke mode managed..."
-airmon-ng stop $interface
+    /Station MAC/ { 
+        exit 0
+    }
+    NR > 2 && NF > 0 && $1 ~ /[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}/ {
+        bssid = $1
+        channel = $4
+        essid = $14
+        print bssid, channel, essid
+    }
+    ' "${csv_file}-01.csv"
+fi
