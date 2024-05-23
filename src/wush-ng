@@ -102,12 +102,12 @@ function memindai_jaringan_wifi(){
 function jelajahi_target(){
         memindai_jaringan_wifi
         while true; do
-                read -p "Silahkan masukkan alamat MAC Access Point (BSSID): " bssid
+                read -p "Masukkan alamat MAC Access Point (BSSID): " bssid
                 if [[ -z "${bssid}" ]] || [[ ! "${bssid}" =~ ^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$ ]]; then
                         echo -e "${m}[-] ${p}Alamat MAC Access Point (BSSID) tidak benar. Harap masukkan alamat MAC Access Point (BSSID) yang benar (contoh: XX:XX:XX:XX:XX:XX).${r}"
                 else
                         while true; do
-                                read -p "Silahkan masukkan nomor channel yang digunakan oleh Access Point: " channel
+                                read -p "Masukkan nomor channel yang digunakan oleh Access Point: " channel
                                 if [[ -z "${channel}" ]] || ! [[ "${channel}" =~ ^[0-9]+$ ]]; then
                                         echo -e "${m}[-] ${p}Nomor channel tidak benar. Harap masukkan nomor channel yang benar.${r}"
                                 else
@@ -216,7 +216,7 @@ function menu_alat_handshake(){
 function masukkan_jalur_file_handshake(){
         while true; do
                 echo ""
-                read -p "Silahkan masukkan jalur file Handshake: " jalur_file_handshake
+                read -p "Masukkan jalur file Handshake: " jalur_file_handshake
                 if [[ ! -z "${jalur_file_handshake}" ]]; then
                         if [[ -f "${jalur_file_handsahake}" ]]; then
                                 if [[ "${jalur_file_handshake##*.}" == "cap" ]]; then
@@ -288,7 +288,7 @@ function menu_pemilihan_file_wordlist(){
 function wordlist_custom(){
         while true; do
                 echo ""
-                read -p "Silahkan masukkan jalur file wordlist: " jalur_file_wordlist
+                read -p "Masukkan jalur file wordlist: " jalur_file_wordlist
                 if [[ ! -z "${jalur_file_wordlist}" ]]; then
                         if [[ -f "${jalur_file_wordlist}" ]]; then
                                 # wordlist default yang digunakan oleh wush-ng
