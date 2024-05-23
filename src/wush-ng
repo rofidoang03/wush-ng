@@ -219,13 +219,13 @@ function masukkan_jalur_file_handshake(){
                 read -p "Silahkan masukkan jalur file Handshake: " jalur_file_handshake
                 if [[ ! -z "${jalur_file_handshake}" ]]; then
                         if [[ -f "${jalur_file_handsahake}" ]]; then
-                                if [[ "${jalur_file_handsake##*.}" == "cap" ]]; then
+                                if [[ "${jalur_file_handshake##*.}" == "cap" ]]; then
                                         break
                                 else
-                                        echo -e "${m}[-] ${p}File handshake ${jalur_file_handsake} tidak benar. Harap masukkan file Handshake yang benar (.cap).${r}"
+                                        echo -e "${m}[-] ${p}File handshake ${jalur_file_handshake} tidak benar. Harap masukkan file Handshake yang benar (.cap).${r}"
                                 fi
                         else
-                                echo -e "${m}[-] ${p}File handshake ${jalur_file_handsake} tidak ditemukan.${r}"
+                                echo -e "${m}[-] ${p}File handshake ${jalur_file_handshake} tidak ditemukan.${r}"
                         fi
                 else
                                 echo -e "${m}[-] ${p}Jalur file Handshake tidak boleh kosong.${r}"
