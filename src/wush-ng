@@ -220,6 +220,8 @@ function masukkan_jalur_file_handshake(){
                 if [[ ! -z "${jalur_file_handshake}" ]]; then
                         if [[ -f "${jalur_file_handsahake}" ]]; then
                                 if [[ "${jalur_file_handshake##*.}" == "cap" ]]; then
+                                        echo "[+] File Handshake ${jalur_file_handshake} ditemukan."
+                                        tekan_enter
                                         break
                                 else
                                         echo -e "${m}[-] ${p}File handshake ${jalur_file_handshake} tidak benar. Harap masukkan file Handshake yang benar (.cap).${r}"
