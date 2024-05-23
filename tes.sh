@@ -14,10 +14,8 @@ if [[ ! -f "${csv_file}-01.csv" ]]; then
     exit 1
 fi
 
-# Menampilkan BSSID, Channel, dan ESSID
-echo "============================================="
 printf "%-20s %-10s %-s\n" "BSSID" "Channel" "ESSID"
-echo "---------------------------------------------"
+printf "%-20s %-10s %-s\n" "------------------" "--------" "------"
 
 # Membaca file CSV dan memproses data
 awk -F',' '
@@ -27,12 +25,10 @@ BEGIN {
 /Station MAC/ { 
     exit 0
 }
-NR > 2 && NF > 0 && $1 ~ /[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}/ {
+NR > 2 && NF > 0 && $1 ~ /[0-9A-Faf]{2}(:[0-9A-Fa-f]{2}){5}/ {
     bssid = $1
     channel = $4
     essid = $14
     printf "%-20s %-10s %-s\n", bssid, channel, essid
 }
 ' "${csv_file}-01.csv"
-
-echo "============================================="
