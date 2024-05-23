@@ -15,8 +15,6 @@ if [[ ! -f "${csv_file}-01.csv" ]]; then
 fi
 
 printf "%-20s %-10s %-s\n" "BSSID" "Channel" "ESSID"
-printf "%-20s %-10s %-s\n" "------------------" "--------" "------"
-
 # Membaca file CSV dan memproses data
 awk -F',' '
 BEGIN {
