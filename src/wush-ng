@@ -44,37 +44,26 @@ function cek_root(){
 
 function tekan_enter(){
         echo ""
-        read -p $'\e[1;32mTekan [Enter] untuk melanjutkan...\e[0m'
-}
-
-function waktu_saat_ini(){
-        waktu=$(date +"%Y-%m-%d_%H:%M:%S")
-        echo -e "[ ${waktu} ]"
+        read -p "Tekan [Enter] untuk melanjutkan..."
 }
 
 function pemilihan_antarmuka_jaringan(){
-        w1=$(waktu_saat_ini)
         clear
+        echo "************************* Pemilihan antarmuka jaringan *************************"
         echo ""
-        echo -e "${b}${w1}${r}"
-        echo ""
-        echo -e "${b}******************** Pemilihan Antarmuka Jaringan ********************"
-        echo "======================================================================"
-        echo ""
+        echo "Pilih opsi dari menu"
+        echo "---------------"
 
         # antarmuka jaringan yang tersedia
         antarmuka_jaringan_yang_tersedia=($(iw dev | awk '/Interface/{print $2}'))
         for ((i=0; i<"${#antarmuka_jaringan_yang_tersedia[@]}"; i++)); do
-                echo "                [${i}] ${antarmuka_jaringan_yang_tersedia[$i]}"
+                echo "${i}. ${antarmuka_jaringan_yang_tersedia[$i]}"
         done
-        echo ""
-        echo "======================================================================"
-        echo ""
-        echo "             [ ] Pilih Opsi Atau CTRL+C untuk Membatalkan"
-        echo -e "${r}"
+        echo "--------------"
+
         while true; do
                 # input memilih antar muka jaringan
-                read -p "[»] " memlih_antarmuka_jaringan
+                read -p "wush-ng: " memlih_antarmuka_jaringan
 
                 if [[ "${memlih_antarmuka_jaringan}" =~ ^[0-9]+$ ]] && (( memlih_antarmuka_jaringan >= 0 && memlih_antarmuka_jaringan < ${#antarmuka_jaringan_yang_tersedia[@]} )); then
                         # antarmuka jaringan
@@ -176,26 +165,21 @@ function tangkap_handshake(){
 
 function menu_alat_handshake(){
         while true; do
-                w4=$(waktu_saat_ini)
                 clear
-                echo -e "${b}"
-                echo "${w4}"
-                echo ""
-                echo "************************* Menu alat Handshake ************************"
-                echo "======================================================================"
+                echo "************************* Menu alat Handshake *************************"
                 echo "                                                                      "
-                echo "                [1] Pilih antarmuka jaringan yang lain                "
-                echo "                [2] Aktifkan mode monitor                             "
-                echo "                [3] Nonaktifkan mode monitor                          "
-                echo "                [4] Jelajahi target                                   "
-                echo "                [5] Tangkap Handshake                                 "
-                echo "                [6] Kembali ke menu utama                             "
-                echo "                                                                      "
-                echo "======================================================================"
-                echo ""
-                echo "             [ ] Pilih Opsi atau CTRL+C untuk Membatalkan             "
-                echo -e "${r}"
-                read -p "[»] " mah
+                echo "Pilih opsi dari menu"
+                echo "--------------"
+                echo "1. Pilih antarmuka jaringan yang lain                "
+                echo "2. Aktifkan mode monitor                             "
+                echo "3. Nonaktifkan mode monitor                          "
+                echo "--------------"
+                echo "4. Jelajahi target                                   "
+                echo "5. Tangkap Handshake                                 "
+                echo "--------------"
+                echo "6. Kembali ke menu utama                             "
+                echo "--------------"
+                read -p "wush-ng: " mah
                 case "${mah}" in
                         1)
                                 pemilihan_antarmuka_jaringan
@@ -249,7 +233,57 @@ function masukkan_jalur_file_handshake(){
         done
 }
 
-function masukkan_jalur_file_wordlist(){
+function dekripsi_wpa_wpa2(){
+        echo ""
+        echo -e "${b}[*] ${p}Mendeskripsi WPA/WPA2 menggunakan aircrack-ng pada file Handshake  ${folder_file_handshake}${file_handshake_airodump}.${r}"
+        sleep 3
+        aircrack-ng -w "${wordlist}" "${folder_file_handshake}${file_handshake_airodump}"
+
+}
+
+function menu_pemilihan_file_wordlist(){
+        echo "************************* Menu pemilihan file wordlist *************************"
+        echo ""
+        echo "Pilih opsi dari menu:"
+        echo "--------------"
+        echo "1. rockyou.txt"
+        echo "2. indonesian wordlist.txt"
+        echo "3. wotabuhun.txt"
+        echo "4. wpa-top4800.txt"
+        echo "5. wpa-over200k.txt"
+        echo "6. wordlist khusus (custom)"
+        echo "--------------"
+        echo "7. Kembali ke menu sebelumnya"
+        echo "--------------"
+        while true; do
+                read -p "wush-ng: " mpfw
+                        case "${mpfw}" in
+                                1)
+                                        wordlist="/usr/share/wush-ng/wordlists/rockyou.txt"
+                                        ;;
+                                2)
+                                        wordlist="/usr/share/wush-ng/wordlists/indonesian-wordlist.txt"
+                                        ;;
+                                3)
+                                        wordlist="/usr/share/wush-ng/wordlists/wotabuhun.txt"
+                                        ;;
+                                4)
+                                        wordlist="/usr/share/wush-ng/wordlists/wpa-top4800.txt"
+                                        ;;
+                                5)
+                                        wordlist="/usr/share/wush-ng/wordlists/wpa-over200k.txt"
+                                        ;;
+                                6)
+                                        wordlist_custom
+                                        ;;
+                                7)
+                                        menu_dekripsi_wpa_wpa2
+                                        ;;
+                        esac
+        done
+}
+
+function wordlist_custom(){
         while true; do
                 echo ""
                 read -p "Silahkan masukkan jalur file wordlist: " jalur_file_wordlist
@@ -257,10 +291,6 @@ function masukkan_jalur_file_wordlist(){
                         if [[ -f "${jalur_file_wordlist}" ]]; then
                                 # wordlist default yang digunakan oleh wush-ng
                                 wordlist="${jalur_file_wordlist}"
-                                echo ""
-                                echo -e "${b}[*] ${p}Mendeskripsi kata sandi jaringan WPA2 menggunakan aircrack-ng pada file Handshake  ${folder_file_handshake}${file_handshake_airodump}.${r}"
-                                sleep 3
-                                aircrack-ng -w "${wordlist}" "${folder_file_handshake}${file_handshake_airodump}"
                                 break
                         else
                                 echo -e "${m}[-] ${p}File wordlist ${jalur_file_wordlist} tidak ditemukan.${r}"
@@ -271,7 +301,7 @@ function masukkan_jalur_file_wordlist(){
         done
 }
 
-function mendeskripsi_kata_sandi_jaringan_wpa2(){
+function menu_dekripsi_wpa_wpa2(){
         target_file_handshake="${folder_file_handshake}${file_handshake_airodump}"
         if [[ -f "${target_file_handshake}" ]]; then
                 while true; do
@@ -280,17 +310,18 @@ function mendeskripsi_kata_sandi_jaringan_wpa2(){
                         echo "" ""
                         read -p "Apakah Anda ingin menggunakan file Handshake yang sudah dipilih ini (Y/n): " kamu_nanya
                         if [[ "${kamu_nanya}" == "y" || "${kamu_nanya}" == "Y" ]]; then
-                                masukkan_jalur_file_wordlist
+                                menu_pemilihan_file_wordlist
+                                dekripsi_wpa_wpa2
                                 break
                 elif [[ "${kamu_nanya}" == "n" || "${kamu_nanya}" == "N" ]]; then
                                 masukkan_jalur_file_handshake
-                        break
+                                break
                 else
                         echo [-] -e "${p}Masukan tidak valid. Harap masukkan Y atau N.${r}"
                 fi
                 done
         else
-                jalur_file_handsake
+                masukkan_jalur_file_handshake
         fi
 }
 
@@ -298,23 +329,16 @@ function tentang_dukung_saya(){
         tentang="wush-ng adalah sebuah program Bash sederhana yang dibuat untuk melakukan audit keamanan jaringan Wi-Fi."
         url="https://github.com/rofidoang03/wush-ng"
         while true; do
-                w5=$(waktu_saat_ini)
                 clear
-                echo -e "${b}"
-                echo "${w5}"
+                echo "************************* Tentang dan dukung Saya  ********************"
                 echo ""
-                echo "*********************** Tentang dan dukung Saya **********************"
-                echo "======================================================================"
-                echo "                                                                      "
-                echo "                       [1] Tentang                                    "
-                echo "                       [2] Dukung Saya                                "
-                echo "                       [3] Kembali ke menu utama                      "
-                echo "                                                                      "
-                echo "======================================================================"
-                echo ""
-                echo "             [ ] Pilih Opsi Atau CTRL+C untuk Membatalkan             "
-                echo -e "${r}"
-                read -p "[»] " tdds
+                echo "Pilih opsi dari menu"
+                echo "--------------"
+                echo "1. Tentang"
+                echo "2. Dukung Saya"
+                echo "3. Kembali ke menu utama"
+                echo "--------------"
+                read -p "wush-ng: " tdds
                 case "${tdds}" in
                         1)
                                 echo ""
@@ -338,57 +362,50 @@ function tentang_dukung_saya(){
 }
 
 function peringatan(){
-        w2=$(waktu_saat_ini)
         clear
-        echo ""
-        echo -e "${m}======================================================================"
-        echo -e "                                                                      "
-        echo -e "                              PERINGATAN                              "
-        echo -e "                                                                      "
-        echo -e "           Penyalahgunaan atau penggunaan program ini untuk           "
-        echo -e "             aktivitas ilegal dilarang keras. Program ini             "
-        echo -e "         disediakan semata-mata untuk tujuan pembelajaran dan         "
-        echo -e "            pengujian keamanan jaringan yang sah. Pengguna            "
-        echo -e "             bertanggung jawab penuh atas penggunaan dan              "
-        echo -e "         konsekuensi yang timbul dari penggunaan program ini.         "
-        echo -e "                                                                      "
-        echo -e "           ILARANG KERAS menggunakan program ini tanpa izin           "
-        echo -e "           atau untuk tujuan merusak atau melanggar hukum.            "
-        echo -e "             Segala tindakan ilegal diluar tanggung jawab             "
-        echo -e "                           pembuat program.                           "
-        echo -e "                                                                      "
-        echo -e "            DENGAN MENGGUNAKAN PROGRAM INI, ANDA MENYATAKAN           "
-        echo -e "        BAHWA ANDA MEMAHAMI DAN MENERIMA SYARAT DAN KETENTUAN         "
-        echo -e "                                DIATAS.                               "
-        echo -e "                                                                      "
-        echo -e "                               ${k}[ ROFI ]${m}                       "
-        echo -e "                                                                      "
-        echo -e "======================================================================${r}"
+        echo "======================================================================"
+        echo "                                                                      "
+        echo "                              PERINGATAN                              "
+        echo "                                                                      "
+        echo "           Penyalahgunaan atau penggunaan program ini untuk           "
+        echo "             aktivitas ilegal dilarang keras. Program ini             "
+        echo "         disediakan semata-mata untuk tujuan pembelajaran dan         "
+        echo "            pengujian keamanan jaringan yang sah. Pengguna            "
+        echo "             bertanggung jawab penuh atas penggunaan dan              "
+        echo "         konsekuensi yang timbul dari penggunaan program ini.         "
+        echo "                                                                      "
+        echo "           DILARANG KERAS menggunakan program ini tanpa izin          "
+        echo "           atau untuk tujuan merusak atau melanggar hukum.            "
+        echo "             Segala tindakan ilegal diluar tanggung jawab             "
+        echo "                           pembuat program.                           "
+        echo "                                                                      "
+        echo "            DENGAN MENGGUNAKAN PROGRAM INI, ANDA MENYATAKAN           "
+        echo "        BAHWA ANDA MEMAHAMI DAN MENERIMA SYARAT DAN KETENTUAN         "
+        echo "                                DIATAS.                               "
+        echo "                                                                      "
+        echo "                               [ ROFI ]                               "
+        echo "                                                                      "
+        echo "======================================================================"
 }
 
 function wush-ng(){
         while true; do
-                w3=$(waktu_saat_ini)
                 clear
-                echo -e "${b}"
-                echo "${w3}"
+                echo "************************* Menu Utama WUSH-NG  *************************"
                 echo ""
-                echo "********************** Menu Utama Wi-Fi Hacking **********************"
-                echo "======================================================================"
-                echo ""
-                echo "                [1] Pilih antarmuka jaringan yang lain                "
-                echo "                [2] Aktifkan mode monitor"
-                echo "                [3] Nonaktifkan mode monitor"
-                echo "                [4] Menu alat handshake"
-                echo "                [5] Deskripsi kata sandi jaringan WPA2"
-                echo "                [6] Tentang dan Dukung Saya"
-                echo "                [7] Keluar"
-                echo ""
-                echo "======================================================================"
-                echo ""
-                echo "                [ ] Pilih Opsi atau CTRL+C untuk Membatalkan"
-                echo -e "${r}"
-                read -p "[»] " main
+                echo "Pilih opsi dari menu"
+                echo "--------------"
+                echo "1. Pilih antarmuka jaringan yang lain"
+                echo "2. Aktifkan mode monitor"
+                echo "3. Nonaktifkan mode monitor"
+                echo "--------------"
+                echo "4. Menu alat handshake"
+                echo "5. Menu dekripsi WPA/WPA2"
+                echo "--------------"
+                echo "6. Tentang dan Dukung Saya"
+                echo "7. Keluar"
+                echo "--------------"
+                read -p "wush-ng: " main
                 case "${main}" in
                         1)
                                 pemilihan_antarmuka_jaringan
@@ -406,7 +423,7 @@ function wush-ng(){
                                 # tekan_enter
                                 ;;
                         5)
-                                mendeskripsi_kata_sandi_jaringan_wpa2
+                                menu_dekripsi_wpa_wpa2
                                 tekan_enter
                                 ;;
                         6) 
