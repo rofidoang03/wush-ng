@@ -1,53 +1,45 @@
 #!/bin/bash
 
-# Fungsi untuk menjalankan airodump-ng dan menyimpan output ke file
-run_airodump() {
-    local output_file="$1"
-    # Jalankan airodump-ng selama 30 detik
-    timeout 30s airodump-ng -w "$output_file" --output-format csv wlan0mon
+# Nama file CSV output
+csv_file="airodump-output.csv"
+interface="wlan0mon"  # Ganti dengan nama interface yang sesuai
+
+# Memastikan interface dalam mode monitor
+echo "Mengatur interface $interface ke mode monitor..."
+airmon-ng start $interface
+
+# Melakukan pemindaian menggunakan airodump-ng
+echo "Melakukan pemindaian dengan airodump-ng..."
+airodump-ng --output-format csv --write $csv_file $interface
+
+# Memastikan file CSV ada
+if [[ ! -f "${csv_file}-01.csv" ]]; then
+    echo "File ${csv_file}-01.csv tidak ditemukan!"
+    exit 1
+fi
+
+# Menampilkan BSSID dan client yang terhubung
+echo "BSSID dan client yang terhubung:"
+
+# Membaca file CSV dan memproses data
+awk -F',' '
+BEGIN {
+    OFS="\t"
+    print "BSSID", "Client"
 }
-
-# Fungsi untuk mem-parsing output file airodump-ng
-parse_airodump_output() {
-    local file_path="$1"
-    local bssids_with_clients=()
-
-    # Flag untuk menentukan apakah kita berada di bagian klien
-    local clients_section=false
-
-    while IFS=, read -r line; do
-        # Jika kita menemukan header bagian Station MAC, berarti kita masuk ke bagian klien
-        if [[ "$line" == *"Station MAC"* ]]; then
-            clients_section=true
-            continue
-        fi
-
-        if $clients_section; then
-            # Ambil kolom ke-6 yang merupakan BSSID
-            bssid=$(echo "$line" | awk -F, '{print $6}' | xargs)
-            if [[ $bssid =~ ^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$ ]]; then
-                bssids_with_clients+=("$bssid")
-            fi
-        fi
-    done < "$file_path"
-
-    # Hapus duplikasi dan tampilkan BSSID yang memiliki klien terhubung
-    if [[ ${#bssids_with_clients[@]} -gt 0 ]]; then
-        echo "BSSID with clients connected:"
-        printf "%s\n" "${bssids_with_clients[@]}" | sort -u
-    else
-        echo "No BSSID with clients found."
-    fi
+/Station MAC/ { 
+    station_section = 1
+    next
 }
-
-# Main function
-main() {
-    local output_file="airodump_output"
-    run_airodump "$output_file"
-
-    # Pastikan untuk memeriksa file output yang sesuai (biasanya ditambahkan -01.csv)
-    parse_airodump_output "${output_file}-01.csv"
+station_section == 1 && NF > 0 {
+    client_mac = $1
+    bssid = $6
+    if (bssid != "(not associated)") {
+        print bssid, client_mac
+    }
 }
+' "${csv_file}-01.csv"
 
-# Jalankan fungsi utama
-main
+# Mengembalikan interface ke mode managed
+echo "Mengembalikan interface $interface ke mode managed..."
+airmon-ng stop $interface
