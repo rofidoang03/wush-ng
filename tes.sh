@@ -6,7 +6,7 @@ interface="wlan0mon"  # Ganti dengan nama interface yang sesuai
 
 # Melakukan pemindaian menggunakan airodump-ng
 echo "Melakukan pemindaian dengan airodump-ng..."
-airodump-ng --output-format csv --write $csv_file $interface
+airodump-ng --output-format csv --write "$csv_file" "$interface"
 
 # Memastikan file CSV ada
 if [[ ! -f "${csv_file}-01.csv" ]]; then
@@ -20,8 +20,8 @@ echo "BSSID, Channel, ESSID:"
 # Membaca file CSV dan memproses data
 awk -F',' '
 BEGIN {
-    OFS="\t"
-    print "BSSID", "Channel", "ESSID"
+    printf "%-20s %-10s %-s\n", "BSSID", "Channel", "ESSID"
+    printf "%-20s %-10s %-s\n", "------------------", "--------", "------"
 }
 /Station MAC/ { 
     exit 0
@@ -30,6 +30,6 @@ NR > 2 && NF > 0 && $1 ~ /[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}/ {
     bssid = $1
     channel = $4
     essid = $14
-    print bssid, channel, essid
+    printf "%-20s %-10s %-s\n", bssid, channel, essid
 }
 ' "${csv_file}-01.csv"
